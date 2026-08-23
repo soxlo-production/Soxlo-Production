@@ -19,6 +19,8 @@ const formatTime=(seconds)=>{
   return `${m}:${s}`;
 };
 
+const allVideos=[...document.querySelectorAll('.video-frame video')];
+
 document.querySelectorAll('.video-frame video').forEach(video=>{
   video.removeAttribute('controls');
   video.preload='auto';
@@ -90,6 +92,9 @@ document.querySelectorAll('.video-frame video').forEach(video=>{
   video.addEventListener('durationchange',updateDuration);
   video.addEventListener('timeupdate',updateProgress);
   video.addEventListener('play',()=>{
+    allVideos.forEach(other=>{
+      if(other!==video&&!other.paused) other.pause();
+    });
     preview.classList.add('hidden');
     play.textContent='❚❚';
     play.setAttribute('aria-label','Pause');
