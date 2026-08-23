@@ -23,3 +23,9 @@ document.addEventListener('keydown',e=>{
   const key=e.key.toLowerCase();
   if((e.ctrlKey||e.metaKey)&&(key==='s'||key==='u')){e.preventDefault()}
 });
+
+// Load the Supabase-powered like buttons without changing the existing page markup.
+const likesScript=document.createElement('script');
+likesScript.src='likes.js?v=20260823-1805';
+likesScript.defer=true;
+document.body.appendChild(likesScript);
