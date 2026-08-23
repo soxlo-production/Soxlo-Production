@@ -1,3 +1,18 @@
+const goldFix=document.createElement('style');
+goldFix.textContent=`
+.soxlo-player{
+  background:linear-gradient(110deg,#6f4a12 0%,#9b6b1f 22%,#c08b32 45%,#8b5d19 72%,#5a3b0d 100%)!important;
+  border-top:1px solid #f0cf73!important;
+  border-bottom:1px solid #8f651f!important;
+  box-shadow:0 -6px 20px #0008,inset 0 1px 0 #ffe7a355!important;
+  color:#fff0b3!important;
+}
+.soxlo-player button{color:#fff0b3!important;text-shadow:0 1px 5px #3d2808!important}
+.soxlo-time{color:#fff4c9!important}
+.soxlo-seek{background:linear-gradient(to right,#ffe08a 0 var(--progress,0%),#6e4b16 var(--progress,0%) 100%)!important}
+`;
+document.head.appendChild(goldFix);
+
 const menu=document.querySelector('.menu');
 const nav=document.querySelector('.nav nav');
 menu?.addEventListener('click',()=>{
