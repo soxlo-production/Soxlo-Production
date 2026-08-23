@@ -3,15 +3,23 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SOXLO Production — original music and music videos.">
+  <meta name="theme-color" content="#b58a37">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SOXLO Player">
   <title>SOXLO Production | Music & Videos</title>
+  <link rel="manifest" href="manifest.webmanifest?v=20260823-1700">
+  <link rel="icon" href="soxlo-app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="soxlo-app-icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260823-1625"><link rel="stylesheet" href="posters.css?v=20260823-1625">
+  <link rel="stylesheet" href="style.css?v=20260823-1700"><link rel="stylesheet" href="posters.css?v=20260823-1700">
 </head><body>
 <header class="nav"><a class="brand" href="#top"><span>SOXLO</span><small>PRODUCTION</small></a><button class="menu" aria-label="Open menu">☰</button><nav><a href="#releases">Releases</a><a href="#about">About</a></nav></header>
 <main id="top">
-<section class="hero"><div class="hero-copy"><p class="eyebrow">OFFICIAL SOXLO PRODUCTION</p><h1>Music made<br><em>to be felt.</em></h1><p class="lead">Original songs and music videos from SOXLO Production — all in one place to watch, listen and share.</p><div class="hero-actions"><a class="button" href="#releases">Watch & listen <span>→</span></a></div></div><div class="hero-orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-core">S</div></div></section>
-<section id="releases" class="section dark-section"><div class="section-heading"><div><p class="eyebrow">SOXLO COLLECTION</p><h2>Music & Videos</h2></div><p>Choose a release below and play it directly on the SOXLO website.</p></div>
+<section class="hero"><div class="hero-copy"><p class="eyebrow">OFFICIAL SOXLO PRODUCTION</p><h1>Music made<br><em>to be felt.</em></h1><p class="lead">Original songs and music videos from SOXLO Production — all in one place to watch, listen and share.</p><div class="hero-actions"><a class="button" href="#releases">Watch & listen <span>→</span></a><button id="install-soxlo" class="button" type="button" style="background:transparent;cursor:pointer" hidden>Install SOXLO Player <span>↓</span></button></div></div><div class="hero-orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-core">S</div></div></section>
+<section id="releases" class="section dark-section"><div class="section-heading"><div><p class="eyebrow">SOXLO COLLECTION</p><h2>Music & Videos</h2></div><p>Choose a release below and play it directly on the SOXLO website. Install SOXLO Player on your phone and new releases will appear automatically when the app connects online.</p></div>
 <div class="video-grid releases-grid">
 <article class="video-card"><div class="video-frame cover-1"><video preload="metadata" playsinline><source src="videos/1787483448110.mp4" type="video/mp4"></video></div><div class="video-info"><span class="track-tag">SOXLO RELEASE</span><h3>You Think You Know Me</h3><p>SOXLO Production</p></div></article>
 <article class="video-card"><div class="video-frame cover-2"><video preload="metadata" playsinline><source src="videos/1785964769490.mp4" type="video/mp4"></video></div><div class="video-info"><span class="track-tag">SOXLO RELEASE</span><h3>Golden Girl</h3><p>SOXLO Production</p></div></article>
@@ -26,5 +34,5 @@
 </div></section>
 <section id="about" class="about section"><p class="eyebrow">ABOUT SOXLO</p><h2>One sound.<br><em>Many feelings.</em></h2><p>SOXLO Production is a personal home for original music, music videos and creative releases. Built to be simple, clean and easy to share with friends.</p><a class="button" href="#releases">Explore the releases <span>→</span></a></section>
 </main><footer><div class="footer-logo">SOXLO <span>PRODUCTION</span></div><p>© 2026 SOXLO Production. All rights reserved.</p></footer>
-<script src="script.js?v=20260823-1625"></script><script src="poster-fix.js?v=20260823-1625"></script>
+<script src="script.js?v=20260823-1700"></script><script src="poster-fix.js?v=20260823-1700"></script><script src="pwa.js?v=20260823-1700"></script>
 </body></html>
