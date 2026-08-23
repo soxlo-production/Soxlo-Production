@@ -1,0 +1,1 @@
+document.querySelectorAll('.video-frame video').forEach(video=>{const frame=video.closest('.video-frame');video.addEventListener('play',()=>frame.classList.add('video-started'));video.addEventListener('ended',()=>frame.classList.remove('video-started'));});
