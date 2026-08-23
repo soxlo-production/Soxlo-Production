@@ -1,63 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SOXLO Production — original music, music videos and creative work.">
-  <title>SOXLO Production | Music & Videos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="SOXLO Production — original music and music videos."><title>SOXLO Production | Music & Videos</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head>
 <body>
-  <header class="nav">
-    <a class="brand" href="#top"><span>SOXLO</span><small>PRODUCTION</small></a>
-    <button class="menu" aria-label="Open menu">☰</button>
-    <nav>
-      <a href="#music">Music</a>
-      <a href="#videos">Videos</a>
-      <a href="#about">About</a>
-    </nav>
-  </header>
-
-  <main id="top">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">SOXLO PRODUCTION</p>
-        <h1>Music that<br><em>feels.</em></h1>
-        <p class="lead">Original songs, emotional sounds and music videos — created by SOXLO.</p>
-        <a class="button" href="#music">Listen to the music <span>→</span></a>
-      </div>
-      <div class="hero-orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-core">S</div></div>
-    </section>
-
-    <section id="music" class="section">
-      <div class="section-heading"><div><p class="eyebrow">LATEST WORK</p><h2>Music</h2></div><p>New songs will appear here as you add them.</p></div>
-      <div class="music-grid">
-        <article class="music-card featured"><div class="cover cover-one"><span>YOU THINK<br>YOU KNOW ME</span></div><div class="card-info"><h3>You Think You Know Me</h3><p>SOXLO Production</p><button class="play" onclick="alert('Add your MP3 file to start playing this track.')">▶ Play</button></div></article>
-        <article class="music-card"><div class="cover cover-two"><span>DREAM-<br>WORLD</span></div><div class="card-info"><h3>Dream-World</h3><p>SOXLO Production</p><button class="play" onclick="alert('Add your MP3 file to start playing this track.')">▶ Play</button></div></article>
-        <article class="music-card"><div class="cover cover-three"><span>JUST<br>ANOTHER DAY</span></div><div class="card-info"><h3>Just Another Day</h3><p>SOXLO Production</p><button class="play" onclick="alert('Add your MP3 file to start playing this track.')">▶ Play</button></div></article>
-      </div>
-      <div class="upload-note"><strong>Your music goes here.</strong> Replace the demo cards with your MP3s and cover artwork when you're ready.</div>
-    </section>
-
-    <section id="videos" class="section dark-section">
-      <div class="section-heading"><div><p class="eyebrow">WATCH</p><h2>Music Videos</h2></div><p>Visual stories from SOXLO Production.</p></div>
-      <div class="video-grid">
-        <div class="video-placeholder"><div class="play-circle">▶</div><h3>Your next music video</h3><p>Upload an MP4 or add a YouTube link.</p></div>
-        <div class="video-placeholder"><div class="play-circle">▶</div><h3>More videos coming</h3><p>Build your own collection here.</p></div>
-      </div>
-    </section>
-
-    <section id="about" class="about section">
-      <p class="eyebrow">ABOUT SOXLO</p>
-      <h2>One sound.<br><em>Many feelings.</em></h2>
-      <p>SOXLO Production is a personal home for original music and videos. Come back often — new songs and visual projects can be added anytime.</p>
-    </section>
-  </main>
-
-  <footer><div class="footer-logo">SOXLO <span>PRODUCTION</span></div><p>© 2026 SOXLO Production. All rights reserved.</p></footer>
-  <script src="script.js"></script>
-</body>
-</html>
+<header class="nav"><a class="brand" href="#top"><span>SOXLO</span><small>PRODUCTION</small></a><button class="menu" aria-label="Open menu">☰</button><nav><a href="#music">Music</a><a href="#videos">Videos</a><a href="#about">About</a></nav></header>
+<main id="top">
+<section class="hero"><div class="hero-copy"><p class="eyebrow">SOXLO PRODUCTION</p><h1>Music that<br><em>feels.</em></h1><p class="lead">Original songs, emotional sounds and music videos — created by SOXLO.</p><a class="button" href="#music">Listen to the music <span>→</span></a></div><div class="hero-orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-core">S</div></div></section>
+<section id="music" class="section"><div class="section-heading"><div><p class="eyebrow">LATEST WORK</p><h2>Music</h2></div><p>Your SOXLO songs will be playable directly on this page.</p></div>
+<div class="music-grid">
+<article class="music-card featured"><div class="cover cover-one"><span>YOU THINK<br>YOU KNOW ME</span></div><div class="card-info"><h3>You Think You Know Me</h3><p>SOXLO Production</p><audio controls preload="metadata"><source src="music/you-think-you-know-me.mp3" type="audio/mpeg">Your browser does not support audio.</audio></div></article>
+<article class="music-card"><div class="cover cover-two"><span>DREAM-<br>WORLD</span></div><div class="card-info"><h3>Dream-World</h3><p>SOXLO Production</p><audio controls preload="metadata"><source src="music/dream-world.mp3" type="audio/mpeg">Your browser does not support audio.</audio></div></article>
+<article class="music-card"><div class="cover cover-three"><span>JUST<br>ANOTHER DAY</span></div><div class="card-info"><h3>Just Another Day</h3><p>SOXLO Production</p><audio controls preload="metadata"><source src="music/just-another-day.mp3" type="audio/mpeg">Your browser does not support audio.</audio></div></article>
+</div><div class="upload-note"><strong>Ready for your music.</strong> Put your MP3 files in the <code>music</code> folder using the filenames shown above.</div></section>
+<section id="videos" class="section dark-section"><div class="section-heading"><div><p class="eyebrow">WATCH</p><h2>Music Videos</h2></div><p>Visual stories from SOXLO Production.</p></div><div class="video-grid"><div class="video-placeholder"><div class="play-circle">▶</div><h3>Your next music video</h3><p>Put MP4 videos in the <code>videos</code> folder.</p></div><div class="video-placeholder"><div class="play-circle">▶</div><h3>More videos coming</h3><p>Your video collection can grow here.</p></div></div></section>
+<section id="about" class="about section"><p class="eyebrow">ABOUT SOXLO</p><h2>One sound.<br><em>Many feelings.</em></h2><p>SOXLO Production is a personal home for original music, music videos and creative projects. New songs, artwork and videos can be added as your production grows.</p></section></main>
+<footer><div class="footer-logo">SOXLO <span>PRODUCTION</span></div><p>© 2026 SOXLO Production. All rights reserved.</p></footer><script src="script.js"></script></body></html>
