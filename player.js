@@ -19,4 +19,16 @@ function next(){index=shuffle?Math.floor(Math.random()*tracks.length):(index+1)%
 function prev(){index=(index-1+tracks.length)%tracks.length;loadTrack(true)}
 playBtn.addEventListener('click',()=>audio.paused?audio.play():audio.pause());nextBtn.addEventListener('click',next);prevBtn.addEventListener('click',prev);shuffleBtn.addEventListener('click',()=>{shuffle=!shuffle;shuffleBtn.classList.toggle('active',shuffle)});repeatBtn.addEventListener('click',()=>{repeat=!repeat;repeatBtn.classList.toggle('active',repeat)});volume.addEventListener('input',()=>audio.volume=volume.value);seek.addEventListener('input',()=>{if(Number.isFinite(audio.duration))audio.currentTime=(seek.value/1000)*audio.duration});audio.addEventListener('loadedmetadata',()=>durationEl.textContent=fmt(audio.duration));audio.addEventListener('timeupdate',()=>{currentTimeEl.textContent=fmt(audio.currentTime);if(Number.isFinite(audio.duration)&&audio.duration>0)seek.value=Math.round(audio.currentTime/audio.duration*1000)});audio.addEventListener('play',()=>{playBtn.textContent='❚❚';document.body.classList.add('is-playing');render()});audio.addEventListener('pause',()=>{playBtn.textContent='▶';document.body.classList.remove('is-playing');render()});audio.addEventListener('ended',()=>repeat?(audio.currentTime=0,audio.play()):next());
 if('mediaSession'in navigator){navigator.mediaSession.setActionHandler('play',()=>audio.play());navigator.mediaSession.setActionHandler('pause',()=>audio.pause());navigator.mediaSession.setActionHandler('previoustrack',prev);navigator.mediaSession.setActionHandler('nexttrack',next);audio.addEventListener('play',()=>navigator.mediaSession.metadata=new MediaMetadata({title:tracks[index].title,artist:'SOXLO Production',album:'SOXLO Releases'}));}
+
+// Discourage casual downloading/copying of SOXLO media.
+audio.setAttribute('controlsList','nodownload noremoteplayback');
+audio.setAttribute('oncontextmenu','return false;');
+audio.setAttribute('draggable','false');
+document.addEventListener('contextmenu',e=>{if(e.target.closest('.app-shell,audio,.track,.artwork'))e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(e.target.closest('audio,.artwork'))e.preventDefault()});
+document.addEventListener('keydown',e=>{
+  const key=e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&(key==='s'||key==='u'))e.preventDefault();
+});
+
 loadTrack(false);audio.volume=.9;
