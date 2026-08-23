@@ -21,16 +21,43 @@ const formatTime=(seconds)=>{
 
 document.querySelectorAll('.video-frame video').forEach(video=>{
   video.removeAttribute('controls');
-  video.preload='metadata';
+  video.preload='auto';
 
-  // Force browsers (especially Android/Chrome) to render the artwork/frame
-  // from the MP4 instead of leaving a black preview before playback.
-  const showArtworkFrame=()=>{
-    if(Number.isFinite(video.duration)&&video.duration>0&&video.currentTime===0){
-      try{ video.currentTime=Math.min(0.08,video.duration/100); }catch(e){}
+  const preview=document.createElement('canvas');
+  preview.className='soxlo-preview';
+  preview.setAttribute('aria-hidden','true');
+  video.insertAdjacentElement('afterend',preview);
+
+  let previewReady=false;
+  let capturing=false;
+
+  const captureFrame=()=>{
+    if(capturing||previewReady||!video.videoWidth||!video.videoHeight) return;
+    capturing=true;
+    preview.width=video.videoWidth;
+    preview.height=video.videoHeight;
+    try{
+      preview.getContext('2d').drawImage(video,0,0,preview.width,preview.height);
+      previewReady=true;
+      preview.classList.add('ready');
+    }catch(e){}
+    capturing=false;
+    if(video.paused){
+      try{video.currentTime=0;}catch(e){}
     }
   };
-  video.addEventListener('loadedmetadata',showArtworkFrame,{once:true});
+
+  const seekForArtwork=()=>{
+    if(!Number.isFinite(video.duration)||video.duration<=0) return;
+    const target=Math.min(1,Math.max(.25,video.duration*.01));
+    try{video.currentTime=target;}catch(e){}
+  };
+
+  video.addEventListener('loadedmetadata',seekForArtwork,{once:true});
+  video.addEventListener('seeked',captureFrame,{once:true});
+  video.addEventListener('loadeddata',()=>{
+    if(!previewReady&&video.currentTime>0) captureFrame();
+  },{once:true});
 
   const controls=document.createElement('div');
   controls.className='soxlo-player';
@@ -41,7 +68,7 @@ document.querySelectorAll('.video-frame video').forEach(video=>{
     <button class="soxlo-volume" type="button" aria-label="Mute">🔊</button>
     <button class="soxlo-more" type="button" aria-label="Fullscreen">⋮</button>`;
 
-  video.insertAdjacentElement('afterend',controls);
+  preview.insertAdjacentElement('afterend',controls);
 
   const play=controls.querySelector('.soxlo-play');
   const current=controls.querySelector('.current');
@@ -62,7 +89,11 @@ document.querySelectorAll('.video-frame video').forEach(video=>{
   video.addEventListener('loadedmetadata',updateDuration);
   video.addEventListener('durationchange',updateDuration);
   video.addEventListener('timeupdate',updateProgress);
-  video.addEventListener('play',()=>{play.textContent='❚❚';play.setAttribute('aria-label','Pause')});
+  video.addEventListener('play',()=>{
+    preview.classList.add('hidden');
+    play.textContent='❚❚';
+    play.setAttribute('aria-label','Pause');
+  });
   video.addEventListener('pause',()=>{play.textContent='▶';play.setAttribute('aria-label','Play')});
   video.addEventListener('ended',()=>{play.textContent='▶';play.setAttribute('aria-label','Play')});
 
@@ -70,6 +101,7 @@ document.querySelectorAll('.video-frame video').forEach(video=>{
   video.addEventListener('click',()=>video.paused?video.play():video.pause());
 
   seek.addEventListener('input',()=>{
+    preview.classList.add('hidden');
     if(Number.isFinite(video.duration)) video.currentTime=(seek.value/1000)*video.duration;
   });
 
