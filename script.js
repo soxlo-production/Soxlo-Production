@@ -21,6 +21,16 @@ const formatTime=(seconds)=>{
 
 document.querySelectorAll('.video-frame video').forEach(video=>{
   video.removeAttribute('controls');
+  video.preload='metadata';
+
+  // Force browsers (especially Android/Chrome) to render the artwork/frame
+  // from the MP4 instead of leaving a black preview before playback.
+  const showArtworkFrame=()=>{
+    if(Number.isFinite(video.duration)&&video.duration>0&&video.currentTime===0){
+      try{ video.currentTime=Math.min(0.08,video.duration/100); }catch(e){}
+    }
+  };
+  video.addEventListener('loadedmetadata',showArtworkFrame,{once:true});
 
   const controls=document.createElement('div');
   controls.className='soxlo-player';
