@@ -2,7 +2,7 @@
   "name": "SOXLO Production Music Player",
   "short_name": "SOXLO Player",
   "description": "Listen to the latest original music from SOXLO Production.",
-  "start_url": "./?app=1",
+  "start_url": "./player.html?app=1",
   "scope": "./",
   "display": "standalone",
   "background_color": "#090909",
