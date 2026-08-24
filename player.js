@@ -8,7 +8,16 @@ const tracks=[
 {title:'Beautiful To Me',src:'videos/1783664299498.mp4'},
 {title:'You Was The Only One',src:'videos/1783865958258.mp4'},
 {title:'My World Is You',src:'videos/1783509565101.mp4'},
-{title:'Love & Hate',src:'videos/1782813002003.mp4'}
+{title:'Love & Hate',src:'videos/1782813002003.mp4'},
+{title:'Love Me Now',src:'videos/2026-05-08-151017988.mp4'},
+{title:'Tell Me the Truth',src:'videos/2026-05-08-201638718.mp4'},
+{title:'Look at That Body',src:'videos/2026-05-10-084314509.mp4'},
+{title:'Am Still Here',src:'videos/2026-05-15-213139403.mp4'},
+{title:'Let Me In',src:'videos/2026-05-15-223720229.mp4'},
+{title:'Solnedgangparty',src:'videos/2026-05-19-100914851.mp4'},
+{title:'Am Falling',src:'videos/2026-05-19-140343527.mp4'},
+{title:'You & Me',src:'videos/2026-05-26-114505379.mp4'},
+{title:'One Last Kiss',src:'videos/2026-06-01-221558457.mp4'}
 ];
 const audio=document.getElementById('audio'),playBtn=document.getElementById('playBtn'),prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),seek=document.getElementById('seek'),currentTimeEl=document.getElementById('currentTime'),durationEl=document.getElementById('duration'),volume=document.getElementById('volume'),trackTitle=document.getElementById('trackTitle'),artTitle=document.getElementById('artTitle'),trackList=document.getElementById('trackList'),shuffleBtn=document.getElementById('shuffleBtn'),repeatBtn=document.getElementById('repeatBtn');
 let index=0,shuffle=false,repeat=false;
