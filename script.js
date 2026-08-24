@@ -1,3 +1,18 @@
+// Publish the latest SOXLO releases on the homepage before player/like controls are initialized.
+const latestReleases=[
+  ['Love Me Now','videos/2026-05-08-151017988.mp4'],
+  ['Tell Me the Truth','videos/2026-05-08-201638718.mp4'],
+  ['Look at That Body','videos/2026-05-10-084314509.mp4'],
+  ['Am Still Here','videos/2026-05-15-213139403.mp4'],
+  ['Let Me In','videos/2026-05-15-223720229.mp4'],
+  ['Solnedgangparty','videos/2026-05-19-100914851.mp4'],
+  ['Am Falling','videos/2026-05-19-140343527.mp4'],
+  ['You & Me','videos/2026-05-26-114505379.mp4'],
+  ['One Last Kiss','videos/2026-06-01-221558457.mp4']
+];
+const releaseGrid=document.querySelector('.releases-grid');
+if(releaseGrid){latestReleases.forEach(([title,src])=>{if(releaseGrid.querySelector(`source[src="${src}"]`))return;const card=document.createElement('article');card.className='video-card';card.innerHTML=`<div class="video-frame"><video preload="metadata" playsinline><source src="${src}" type="video/mp4"></video></div><div class="video-info"><span class="track-tag">SOXLO RELEASE</span><h3>${title}</h3><p>SOXLO Production</p></div>`;releaseGrid.appendChild(card)})}
+
 const goldFix=document.createElement('style');
 goldFix.textContent=`
 .soxlo-player{background:linear-gradient(110deg,#6f4a12 0%,#9b6b1f 22%,#c08b32 45%,#8b5d19 72%,#5a3b0d 100%)!important;border-top:1px solid #f0cf73!important;border-bottom:1px solid #8f651f!important;box-shadow:0 -6px 20px #0008,inset 0 1px 0 #ffe7a355!important;color:#fff0b3!important}.soxlo-player button{color:#fff0b3!important;text-shadow:0 1px 5px #3d2808!important}.soxlo-time{color:#fff4c9!important}.soxlo-seek{background:linear-gradient(to right,#ffe08a 0 var(--progress,0%),#6e4b16 var(--progress,0%) 100%)!important}.share-soxlo{display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:11px 17px;border:1px solid #d9b45a;background:linear-gradient(110deg,#6f4a12,#b8872c,#755018);color:#fff0b3;font:700 12px Inter,Arial,sans-serif;letter-spacing:.5px;cursor:pointer;text-decoration:none}.share-soxlo:hover{filter:brightness(1.15)}
@@ -26,6 +41,6 @@ document.addEventListener('keydown',e=>{
 
 // Load the Supabase-powered like buttons without changing the existing page markup.
 const likesScript=document.createElement('script');
-likesScript.src='likes.js?v=20260823-1805';
+likesScript.src='likes.js?v=20260824-0750';
 likesScript.defer=true;
 document.body.appendChild(likesScript);
