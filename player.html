@@ -7,16 +7,20 @@
   <meta name="description" content="SOXLO Player — listen to the latest SOXLO Production releases.">
   <title>SOXLO Player</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="player.css?v=20260823-1730">
+  <link rel="stylesheet" href="player.css?v=20260903-2">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
       <a class="logo" href="index.html"><span>SOXLO</span><small>PLAYER</small></a>
-      <nav>
-        <a class="active" href="player.html">◉ Now Playing</a>
-        <a href="#playlist">♫ Library</a>
-        <a href="index.html">⌂ Main Website</a>
+      <button class="player-menu-btn" id="playerMenuBtn" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      <nav id="playerMenu">
+        <a class="private-link" href="members.html">Login / Private Music 🔒</a>
+        <a class="active" href="player.html">Player</a>
+        <a href="index.html#releases">Releases</a>
+        <a href="index.html#about">About</a>
+        <a href="copyright.html">Copyright & Legal Rights</a>
+        <a href="mailto:soxlo.production@gmail.com">Contact SOXLO Production</a>
       </nav>
       <div class="sidebar-note">Always connected to the latest SOXLO releases.</div>
     </aside>
@@ -65,6 +69,27 @@
   </div>
 
   <audio id="audio" preload="metadata"></audio>
+  <script>
+    (()=>{
+      const btn=document.getElementById('playerMenuBtn');
+      const nav=document.getElementById('playerMenu');
+      if(!btn||!nav)return;
+      btn.addEventListener('click',()=>{
+        const open=nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded',String(open));
+      });
+      nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded','false');
+      }));
+      document.addEventListener('click',e=>{
+        if(innerWidth<=900&&!nav.contains(e.target)&&!btn.contains(e.target)){
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded','false');
+        }
+      });
+    })();
+  </script>
   <script src="player.js?v=20260903-1"></script>
   <script src="pwa.js?v=20260823-1700"></script>
 </body>
