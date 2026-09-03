@@ -1,6 +1,6 @@
 {
-  "id": "./soxlo-vip-player",
-  "name": "SOXLO VIP Player",
+  "id": "./soxlo-vip",
+  "name": "SOXLO VIP",
   "short_name": "SOXLO VIP",
   "description": "Private SOXLO Production VIP music player for members.",
   "start_url": "./members.html?app=1",
