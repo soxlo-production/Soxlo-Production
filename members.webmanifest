@@ -1,13 +1,25 @@
 {
-  "id": "./members-player",
-  "name": "SOXLO Private Player",
-  "short_name": "SOXLO Private",
-  "description": "Members-only SOXLO Production special releases.",
+  "id": "./soxlo-vip-player",
+  "name": "SOXLO VIP Player",
+  "short_name": "SOXLO VIP",
+  "description": "Private SOXLO Production VIP music player for members.",
   "start_url": "./members.html?app=1",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#090909",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#070707",
   "theme_color": "#b58a37",
   "orientation": "portrait-primary",
-  "icons": [{"src":"soxlo-app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "categories": ["music", "entertainment"],
+  "icons": [
+    {"src":"soxlo-app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {
+      "name": "VIP Playlist",
+      "short_name": "VIP Playlist",
+      "url": "./members.html?app=1#playlist",
+      "icons": [{"src":"soxlo-app-icon.svg","sizes":"any","type":"image/svg+xml"}]
+    }
+  ]
 }
