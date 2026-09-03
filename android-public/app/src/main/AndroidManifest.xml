@@ -1,6 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:theme="@style/AppTheme" android:label="SOXLO Player" android:usesCleartextTraffic="false" android:allowBackup="false">
+    <application
+        android:theme="@style/AppTheme"
+        android:label="SOXLO Player"
+        android:icon="@drawable/soxlo_launcher_icon"
+        android:roundIcon="@drawable/soxlo_launcher_icon"
+        android:usesCleartextTraffic="false"
+        android:allowBackup="false">
         <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
