@@ -1,6 +1,8 @@
 (() => {
   const SESSION_KEY='soxlo_private_session_v1';
   const NOTICE_KEY='soxlo_private_auth_notice_v1';
+  const SUPABASE_URL='https://ovwfqbcxsdfddnfdgopg.supabase.co';
+  const SUPABASE_ANON_KEY='sb_publishable_h5KpewMqq8xOyf6VqFymyg_pgQXB99p';
 
   const cleanUrl=()=>{
     const clean=location.pathname+location.search;
@@ -40,29 +42,15 @@
 
   (async()=>{
     try{
-      const cfgResp=await fetch('supabase-config.json',{cache:'no-store'});
-      if(!cfgResp.ok)throw new Error('Private player configuration is missing.');
-      const cfg=await cfgResp.json();
-      const url=String(cfg.url||'').replace(/\/$/,'');
-      const anonKey=String(cfg.anonKey||'');
-      if(!url||!anonKey)throw new Error('Private player is not connected to Supabase yet.');
-
-      const userResp=await fetch(`${url}/auth/v1/user`,{
-        headers:{apikey:anonKey,Authorization:`Bearer ${accessToken}`}
+      const userResp=await fetch(`${SUPABASE_URL}/auth/v1/user`,{
+        headers:{apikey:SUPABASE_ANON_KEY,Authorization:`Bearer ${accessToken}`}
       });
       const user=await userResp.json().catch(()=>({}));
       if(!userResp.ok||!user?.id)throw new Error('The confirmation link could not be completed. Please sign in again.');
 
       const expiresIn=Number(params.get('expires_in')||3600);
       const expiresAt=Number(params.get('expires_at')||0)||Math.floor(Date.now()/1000)+expiresIn;
-      const session={
-        access_token:accessToken,
-        refresh_token:refreshToken||'',
-        expires_in:expiresIn,
-        expires_at:expiresAt,
-        token_type:params.get('token_type')||'bearer',
-        user
-      };
+      const session={access_token:accessToken,refresh_token:refreshToken||'',expires_in:expiresIn,expires_at:expiresAt,token_type:params.get('token_type')||'bearer',user};
       localStorage.setItem(SESSION_KEY,JSON.stringify(session));
       cleanUrl();
       location.reload();
