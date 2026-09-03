@@ -1,5 +1,5 @@
-const CACHE='soxlo-player-v1';
-const SHELL=['./','./index.html','./style.css','./posters.css','./script.js','./poster-fix.js','./pwa.js','./manifest.webmanifest','./soxlo-app-icon.svg'];
+const CACHE='soxlo-player-v3-20260903';
+const SHELL=['./','./index.html','./style.css','./posters.css','./script.js','./poster-fix.js','./pwa.js','./manifest.webmanifest','./members.html','./members.css','./vip-menu.css','./members.js','./members.webmanifest','./soxlo-app-icon.svg'];
 self.addEventListener('install',event=>{
   self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL).catch(()=>{})));
@@ -16,18 +16,16 @@ self.addEventListener('fetch',event=>{
   const url=new URL(req.url);
   if(url.origin!==location.origin) return;
 
-  // Always check the network first for pages and app code so new songs/releases appear automatically.
   if(req.mode==='navigate' || ['document','script','style','manifest'].includes(req.destination)){
     event.respondWith(fetch(req,{cache:'no-store'}).then(res=>{
       const copy=res.clone();
       caches.open(CACHE).then(cache=>cache.put(req,copy));
       return res;
-    }).catch(()=>caches.match(req).then(r=>r||caches.match('./index.html'))));
+    }).catch(()=>caches.match(req).then(r=>r||caches.match('./members.html')||caches.match('./index.html'))));
     return;
   }
 
-  // Stream music/video from the network; don't trap old releases in the service-worker cache.
-  if(req.destination==='video' || req.destination==='audio' || url.pathname.includes('/videos/')){
+  if(req.destination==='video' || req.destination==='audio' || url.pathname.includes('/videos/') || url.pathname.includes('/storage/v1/')){
     event.respondWith(fetch(req));
     return;
   }
