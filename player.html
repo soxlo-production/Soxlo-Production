@@ -30,6 +30,13 @@
       content:"✦";position:absolute;color:#f6dc8a;font-size:15px;top:10px;right:12px;
       text-shadow:0 0 8px rgba(246,220,138,.9);animation:soxloSparkle 2.1s ease-in-out infinite;
     }
+    .now-playing{position:relative}
+    .player-side-note{
+      width:92px;height:92px;right:14px;top:18px;
+    }
+    .player-side-note .swirl-note{width:60px;height:60px}
+    .player-side-note::before{width:66px;height:34px}
+    .player-side-note::after{top:7px;right:8px;font-size:13px}
     @keyframes soxloNoteSwirl{
       0%{transform:translate(0,5px) rotate(-10deg) scale(.96)}
       25%{transform:translate(10px,-8px) rotate(10deg) scale(1.06)}
@@ -44,11 +51,18 @@
       .swirl-note-wrap{width:96px;height:96px;right:0;top:0}
       .swirl-note{width:62px;height:62px}
       .swirl-note-wrap::before{width:68px;height:34px}
+      .player-side-note{width:74px;height:74px;right:8px;top:10px}
+      .player-side-note .swirl-note{width:48px;height:48px}
+      .player-side-note::before{width:54px;height:28px}
     }
     @media(max-width:520px){
       .topbar{min-height:92px;padding-right:92px}
       .swirl-note-wrap{width:86px;height:86px}
       .swirl-note{width:56px;height:56px}
+      .player-side-note{width:64px;height:64px;right:5px;top:7px}
+      .player-side-note .swirl-note{width:42px;height:42px}
+      .player-side-note::before{width:48px;height:24px}
+      .player-side-note::after{font-size:11px;top:5px;right:5px}
     }
     @media(prefers-reduced-motion:reduce){.swirl-note,.swirl-note-wrap::before,.swirl-note-wrap::after{animation:none}}
   </style>
@@ -81,6 +95,12 @@
       </header>
 
       <section class="now-playing">
+        <div class="swirl-note-wrap player-side-note" aria-hidden="true">
+          <svg class="swirl-note" viewBox="0 0 100 100">
+            <defs><linearGradient id="noteGoldPlayer" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a0"/><stop offset="0.45" stop-color="#e6bd54"/><stop offset="1" stop-color="#a9751d"/></linearGradient></defs>
+            <path fill="url(#noteGoldPlayer)" d="M65 12v49.5c-3.3-1.7-7.5-2.4-11.8-1.5-8.7 1.8-14.6 8.7-13.2 15.5 1.4 6.8 9.6 10.8 18.3 9 7.3-1.5 12.7-6.6 13.4-12.2.1-.5.1-1 .1-1.5V33.5l19-5.2v26.1c-3.3-1.7-7.5-2.4-11.8-1.5-8.7 1.8-14.6 8.7-13.2 15.5 1.4 6.8 9.6 10.8 18.3 9 7.8-1.6 13.4-7.3 13.5-13.3V8L65 16.8V12z"/>
+          </svg>
+        </div>
         <div id="artwork" class="artwork"><div class="art-glow"></div><div class="art-copy"><span>SOXLO</span><strong id="artTitle">SOXLO Release</strong></div></div>
         <div class="track-panel">
           <span class="status">NOW PLAYING</span>
