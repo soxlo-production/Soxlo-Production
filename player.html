@@ -8,6 +8,74 @@
   <title>SOXLO Player</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="player.css?v=20260903-2">
+  <style>
+    .swirl-note-wrap{
+      width:118px;
+      height:118px;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 118px;
+      pointer-events:none;
+      overflow:visible;
+    }
+    .swirl-note{
+      display:block;
+      color:#e2bd5b;
+      font-size:64px;
+      line-height:1;
+      font-family:Georgia,"Times New Roman",serif;
+      text-shadow:0 0 10px rgba(226,189,91,.7),0 0 24px rgba(226,189,91,.28);
+      transform-origin:center;
+      animation:soxloNoteSwirl 4.2s ease-in-out infinite;
+    }
+    .swirl-note-wrap::before{
+      content:"";
+      position:absolute;
+      width:78px;
+      height:34px;
+      border:2px solid rgba(226,189,91,.45);
+      border-left-color:transparent;
+      border-bottom-color:transparent;
+      border-radius:50%;
+      animation:soxloRingSpin 4.2s linear infinite;
+    }
+    .swirl-note-wrap::after{
+      content:"✦";
+      position:absolute;
+      color:#f6dc8a;
+      font-size:14px;
+      top:11px;
+      right:18px;
+      text-shadow:0 0 8px rgba(246,220,138,.8);
+      animation:soxloSparkle 2.1s ease-in-out infinite;
+    }
+    @keyframes soxloNoteSwirl{
+      0%{transform:translate(0,5px) rotate(-9deg) scale(.96)}
+      25%{transform:translate(10px,-8px) rotate(9deg) scale(1.05)}
+      50%{transform:translate(0,-14px) rotate(20deg) scale(1)}
+      75%{transform:translate(-10px,-5px) rotate(4deg) scale(1.06)}
+      100%{transform:translate(0,5px) rotate(-9deg) scale(.96)}
+    }
+    @keyframes soxloRingSpin{
+      from{transform:rotate(0deg) scale(1)}
+      50%{transform:rotate(180deg) scale(1.12)}
+      to{transform:rotate(360deg) scale(1)}
+    }
+    @keyframes soxloSparkle{
+      0%,100%{opacity:.3;transform:scale(.7) rotate(0deg)}
+      50%{opacity:1;transform:scale(1.25) rotate(90deg)}
+    }
+    @media(max-width:900px){
+      .swirl-note-wrap{width:96px;height:96px;flex-basis:96px;margin-left:auto;margin-right:4px}
+      .swirl-note{font-size:54px}
+      .swirl-note-wrap::before{width:66px;height:29px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .swirl-note,.swirl-note-wrap::before,.swirl-note-wrap::after{animation:none}
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
@@ -28,6 +96,7 @@
     <main class="player-main">
       <header class="topbar">
         <div><span class="eyebrow">SOXLO PRODUCTION</span><h1>Music Player</h1></div>
+        <div class="swirl-note-wrap" aria-hidden="true"><span class="swirl-note">♪</span></div>
       </header>
 
       <section class="now-playing">
