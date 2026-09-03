@@ -7,74 +7,50 @@
   <meta name="description" content="SOXLO Player — listen to the latest SOXLO Production releases.">
   <title>SOXLO Player</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="player.css?v=20260903-2">
+  <link rel="stylesheet" href="player.css?v=20260903-3">
   <style>
+    .topbar{position:relative;min-height:118px;padding-right:128px}
     .swirl-note-wrap{
-      width:118px;
-      height:118px;
-      position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex:0 0 118px;
-      pointer-events:none;
-      overflow:visible;
+      width:118px;height:118px;position:absolute;right:0;top:0;
+      display:flex;align-items:center;justify-content:center;
+      pointer-events:none;overflow:visible;z-index:5;
     }
     .swirl-note{
-      display:block;
-      color:#e2bd5b;
-      font-size:64px;
-      line-height:1;
-      font-family:Georgia,"Times New Roman",serif;
-      text-shadow:0 0 10px rgba(226,189,91,.7),0 0 24px rgba(226,189,91,.28);
+      width:74px;height:74px;display:block;
+      filter:drop-shadow(0 0 8px rgba(226,189,91,.85)) drop-shadow(0 0 20px rgba(226,189,91,.35));
       transform-origin:center;
       animation:soxloNoteSwirl 4.2s ease-in-out infinite;
     }
     .swirl-note-wrap::before{
-      content:"";
-      position:absolute;
-      width:78px;
-      height:34px;
-      border:2px solid rgba(226,189,91,.45);
-      border-left-color:transparent;
-      border-bottom-color:transparent;
-      border-radius:50%;
-      animation:soxloRingSpin 4.2s linear infinite;
+      content:"";position:absolute;width:82px;height:42px;
+      border:2px solid rgba(226,189,91,.52);border-left-color:transparent;border-bottom-color:transparent;
+      border-radius:50%;animation:soxloRingSpin 4.2s linear infinite;
     }
     .swirl-note-wrap::after{
-      content:"✦";
-      position:absolute;
-      color:#f6dc8a;
-      font-size:14px;
-      top:11px;
-      right:18px;
-      text-shadow:0 0 8px rgba(246,220,138,.8);
-      animation:soxloSparkle 2.1s ease-in-out infinite;
+      content:"✦";position:absolute;color:#f6dc8a;font-size:15px;top:10px;right:12px;
+      text-shadow:0 0 8px rgba(246,220,138,.9);animation:soxloSparkle 2.1s ease-in-out infinite;
     }
     @keyframes soxloNoteSwirl{
-      0%{transform:translate(0,5px) rotate(-9deg) scale(.96)}
-      25%{transform:translate(10px,-8px) rotate(9deg) scale(1.05)}
+      0%{transform:translate(0,5px) rotate(-10deg) scale(.96)}
+      25%{transform:translate(10px,-8px) rotate(10deg) scale(1.06)}
       50%{transform:translate(0,-14px) rotate(20deg) scale(1)}
-      75%{transform:translate(-10px,-5px) rotate(4deg) scale(1.06)}
-      100%{transform:translate(0,5px) rotate(-9deg) scale(.96)}
+      75%{transform:translate(-10px,-5px) rotate(4deg) scale(1.07)}
+      100%{transform:translate(0,5px) rotate(-10deg) scale(.96)}
     }
-    @keyframes soxloRingSpin{
-      from{transform:rotate(0deg) scale(1)}
-      50%{transform:rotate(180deg) scale(1.12)}
-      to{transform:rotate(360deg) scale(1)}
-    }
-    @keyframes soxloSparkle{
-      0%,100%{opacity:.3;transform:scale(.7) rotate(0deg)}
-      50%{opacity:1;transform:scale(1.25) rotate(90deg)}
-    }
+    @keyframes soxloRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes soxloSparkle{0%,100%{opacity:.3;transform:scale(.7) rotate(0deg)}50%{opacity:1;transform:scale(1.3) rotate(90deg)}}
     @media(max-width:900px){
-      .swirl-note-wrap{width:96px;height:96px;flex-basis:96px;margin-left:auto;margin-right:4px}
-      .swirl-note{font-size:54px}
-      .swirl-note-wrap::before{width:66px;height:29px}
+      .topbar{min-height:98px;padding-right:104px}
+      .swirl-note-wrap{width:96px;height:96px;right:0;top:0}
+      .swirl-note{width:62px;height:62px}
+      .swirl-note-wrap::before{width:68px;height:34px}
     }
-    @media(prefers-reduced-motion:reduce){
-      .swirl-note,.swirl-note-wrap::before,.swirl-note-wrap::after{animation:none}
+    @media(max-width:520px){
+      .topbar{min-height:92px;padding-right:92px}
+      .swirl-note-wrap{width:86px;height:86px}
+      .swirl-note{width:56px;height:56px}
     }
+    @media(prefers-reduced-motion:reduce){.swirl-note,.swirl-note-wrap::before,.swirl-note-wrap::after{animation:none}}
   </style>
 </head>
 <body>
@@ -96,7 +72,12 @@
     <main class="player-main">
       <header class="topbar">
         <div><span class="eyebrow">SOXLO PRODUCTION</span><h1>Music Player</h1></div>
-        <div class="swirl-note-wrap" aria-hidden="true"><span class="swirl-note">♪</span></div>
+        <div class="swirl-note-wrap" aria-hidden="true">
+          <svg class="swirl-note" viewBox="0 0 100 100" role="img" aria-label="music note">
+            <defs><linearGradient id="noteGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a0"/><stop offset="0.45" stop-color="#e6bd54"/><stop offset="1" stop-color="#a9751d"/></linearGradient></defs>
+            <path fill="url(#noteGold)" d="M65 12v49.5c-3.3-1.7-7.5-2.4-11.8-1.5-8.7 1.8-14.6 8.7-13.2 15.5 1.4 6.8 9.6 10.8 18.3 9 7.3-1.5 12.7-6.6 13.4-12.2.1-.5.1-1 .1-1.5V33.5l19-5.2v26.1c-3.3-1.7-7.5-2.4-11.8-1.5-8.7 1.8-14.6 8.7-13.2 15.5 1.4 6.8 9.6 10.8 18.3 9 7.8-1.6 13.4-7.3 13.5-13.3V8L65 16.8V12z"/>
+          </svg>
+        </div>
       </header>
 
       <section class="now-playing">
