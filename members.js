@@ -1,6 +1,7 @@
-const CONFIG_URL='supabase-config.json';
 const BUCKET='special-songs';
 const SESSION_KEY='soxlo_private_session_v1';
+const SUPABASE_URL='https://ovwfqbcxsdfddnfdgopg.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_h5KpewMqq8xOyf6VqFymyg_pgQXB99p';
 let cfg=null,session=null,isAdmin=false,tracks=[],currentId=null,deferredInstallPrompt=null;
 
 const $=id=>document.getElementById(id);
@@ -11,12 +12,7 @@ function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt
 function encodePath(path){return String(path).split('/').map(encodeURIComponent).join('/')}
 
 async function loadConfig(){
-  const r=await fetch(CONFIG_URL,{cache:'no-store'});
-  if(!r.ok) throw new Error('Private player configuration is missing.');
-  cfg=await r.json();
-  cfg.url=String(cfg.url||'').replace(/\/$/,'');
-  cfg.anonKey=String(cfg.anonKey||'');
-  if(!cfg.url||!cfg.anonKey) throw new Error('Private player is not connected to Supabase yet.');
+  cfg={url:SUPABASE_URL,anonKey:SUPABASE_ANON_KEY};
 }
 
 function saveSession(s){session=s;localStorage.setItem(SESSION_KEY,JSON.stringify(s))}
