@@ -31,6 +31,28 @@ as $$
   );
 $$;
 
+-- HARD MEMBERSHIP CAP: only two SOXLO Private Player login accounts may exist.
+-- The advisory lock prevents simultaneous signups from slipping past the count.
+create or replace function public.enforce_soxlo_account_limit()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+begin
+  perform pg_advisory_xact_lock(83920501);
+  if (select count(*) from auth.users) >= 2 then
+    raise exception 'SOXLO private membership is full. Maximum 2 login accounts.';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists soxlo_limit_auth_users on auth.users;
+create trigger soxlo_limit_auth_users
+before insert on auth.users
+for each row execute procedure public.enforce_soxlo_account_limit();
+
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
