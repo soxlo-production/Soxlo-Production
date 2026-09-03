@@ -1,0 +1,39 @@
+name: Build SOXLO Public APK
+
+on:
+  push:
+    paths:
+      - 'android-public/**'
+      - '.github/workflows/build-public-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Build APK
+        working-directory: android-public
+        run: gradle assembleDebug
+      - name: Prepare APK
+        run: cp android-public/app/build/outputs/apk/debug/app-debug.apk SOXLO-Player.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SOXLO-Player-APK
+          path: SOXLO-Player.apk
+      - name: Publish latest APK release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view soxlo-player-latest >/dev/null 2>&1 || gh release create soxlo-player-latest --title 'SOXLO Player Android App' --notes 'Latest installable public SOXLO Player Android APK.' --target "$GITHUB_SHA"
+          gh release upload soxlo-player-latest SOXLO-Player.apk --clobber
