@@ -1,4 +1,4 @@
-let deferredInstallPrompt=null;
+const PUBLIC_APK_URL='https://github.com/soxlo-production/Soxlo-Production/releases/download/soxlo-player-latest/SOXLO-Player.apk';
 const installButton=document.querySelector('#install-soxlo');
 
 if('serviceWorker' in navigator){
@@ -10,26 +10,19 @@ if('serviceWorker' in navigator){
   });
 }
 
+// The public website download button now downloads the Android APK directly.
+// Do not show the old PWA "Add to Home screen" prompt here.
 window.addEventListener('beforeinstallprompt',event=>{
   event.preventDefault();
-  deferredInstallPrompt=event;
-  if(installButton) installButton.hidden=false;
 });
 
-installButton?.addEventListener('click',async()=>{
-  if(deferredInstallPrompt){
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt=null;
-    installButton.hidden=true;
-    return;
-  }
-  alert('On your phone, open the browser menu and choose “Add to Home screen” or “Install app”.');
-});
-
-window.addEventListener('appinstalled',()=>{
-  if(installButton) installButton.hidden=true;
-});
+if(installButton){
+  installButton.hidden=false;
+  installButton.innerHTML='Download SOXLO Player APK <span>↓</span>';
+  installButton.addEventListener('click',()=>{
+    window.location.href=PUBLIC_APK_URL;
+  });
+}
 
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
 if(isStandalone) document.documentElement.classList.add('soxlo-app-mode');
