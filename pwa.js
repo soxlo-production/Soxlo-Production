@@ -33,3 +33,14 @@ window.addEventListener('appinstalled',()=>{
 
 const isStandalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
 if(isStandalone) document.documentElement.classList.add('soxlo-app-mode');
+
+// Always expose the private members login directly in the main SOXLO menu.
+const soxloNav=document.querySelector('.nav nav');
+if(soxloNav && !soxloNav.querySelector('a[href="members.html"]')){
+  const loginLink=document.createElement('a');
+  loginLink.href='members.html';
+  loginLink.textContent='Login / Private Music 🔒';
+  loginLink.style.color='#e2ac37';
+  loginLink.style.fontWeight='700';
+  soxloNav.insertBefore(loginLink,soxloNav.firstChild);
+}
