@@ -34,7 +34,11 @@
         </form>
         <p id="loginMessage" class="message" aria-live="polite"></p>
 
-        <div class="membership-create" style="margin-top:24px;padding-top:22px;border-top:1px solid #5c4317">
+        <div style="margin-top:22px;text-align:center">
+          <a id="showMembershipLink" href="#create-membership" style="color:#d7ad55;text-decoration:underline;font-weight:700">Not a member? Create Membership</a>
+        </div>
+
+        <div id="membershipCreate" class="membership-create" hidden style="margin-top:24px;padding-top:22px;border-top:1px solid #5c4317">
           <p class="eyebrow">NEW MEMBER</p>
           <h2 style="margin:6px 0 8px">Create Membership</h2>
           <p class="muted">Create your private SOXLO login. Membership is limited to 2 accounts.</p>
@@ -44,6 +48,7 @@
             <button class="gold-btn" type="submit">Create Membership</button>
           </form>
           <p id="signupMessage" class="message" aria-live="polite"></p>
+          <button id="hideMembershipBtn" class="ghost" type="button" style="margin-top:8px">Back to Login</button>
         </div>
       </div>
     </section>
@@ -71,5 +76,18 @@
   <script src="members-auth-callback.js?v=20260903-1"></script>
   <script src="members.js?v=20260903-3"></script>
   <script src="members-signup.js?v=20260903-4"></script>
+  <script>
+    (()=>{
+      const link=document.getElementById('showMembershipLink');
+      const box=document.getElementById('membershipCreate');
+      const back=document.getElementById('hideMembershipBtn');
+      if(!link||!box)return;
+      const open=()=>{box.hidden=false;link.parentElement.hidden=true;box.scrollIntoView({behavior:'smooth',block:'center'});};
+      const close=()=>{box.hidden=true;link.parentElement.hidden=false;document.getElementById('email')?.focus();};
+      link.addEventListener('click',e=>{e.preventDefault();open();});
+      back?.addEventListener('click',close);
+      if(location.hash==='#create-membership')open();
+    })();
+  </script>
 </body>
 </html>
