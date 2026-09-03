@@ -1,4 +1,5 @@
 const BUCKET='special-songs';
+const PUBLIC_BUCKET='public-songs';
 const SESSION_KEY='soxlo_private_session_v1';
 const SUPABASE_URL='https://ovwfqbcxsdfddnfdgopg.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_h5KpewMqq8xOyf6VqFymyg_pgQXB99p';
@@ -7,6 +8,7 @@ let cfg=null,session=null,isAdmin=false,tracks=[],currentId=null,deferredInstall
 const $=id=>document.getElementById(id);
 const loginView=$('loginView'),appView=$('appView'),loginForm=$('loginForm'),loginMessage=$('loginMessage'),logoutBtn=$('logoutBtn'),trackList=$('trackList'),trackCount=$('trackCount'),libraryMessage=$('libraryMessage'),audio=$('audio'),trackTitle=$('trackTitle'),nowTitle=$('nowTitle'),adminPanel=$('adminPanel'),uploadForm=$('uploadForm'),uploadMessage=$('uploadMessage'),refreshBtn=$('refreshBtn'),installBtn=$('installBtn');
 const mainPlayBtn=$('mainPlayBtn'),prevBtn=$('prevBtn'),nextBtn=$('nextBtn'),seekBar=$('seekBar'),currentTimeEl=$('currentTime'),durationEl=$('duration'),playerCard=$('playerCard');
+const songDestination=$('songDestination'),destinationHint=$('destinationHint'),uploadSubmitBtn=$('uploadSubmitBtn');
 
 function message(el,text,type=''){if(!el)return;el.textContent=text;el.className='message'+(type?` ${type}`:'')}
 function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -102,16 +104,37 @@ async function downloadTrack(id,btn){
   try{const url=await getSignedUrl(t.storage_path,300);const a=document.createElement('a');a.href=url;a.download=t.title;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}catch(e){message(libraryMessage,e.message,'error')}finally{btn.disabled=false;btn.textContent=old}
 }
 
+function updateDestinationUI(){
+  if(!songDestination)return;
+  const isPublic=songDestination.value==='public';
+  if(destinationHint)destinationHint.textContent=isPublic?'🌍 Public Player: everyone visiting the SOXLO public player can listen to this song.':'👑 VIP Membership Player: only signed-in VIP members can access this song.';
+  if(uploadSubmitBtn)uploadSubmitBtn.textContent=isPublic?'Upload to Public Player':'Upload to VIP Playlist';
+}
+
 async function uploadSong(){
   const title=$('songTitle').value.trim(),file=$('songFile').files[0];if(!title||!file)return;
+  const destination=songDestination?.value==='public'?'public':'vip';
+  const isPublic=destination==='public';
+  const bucket=isPublic?PUBLIC_BUCKET:BUCKET;
+  const table=isPublic?'public_tracks':'special_tracks';
+  const targetLabel=isPublic?'public player':'VIP membership player';
   const safe=(file.name||'song').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/^-+|-+$/g,'');
   const path=`${Date.now()}-${crypto.randomUUID?.()||Math.random().toString(36).slice(2)}-${safe}`;
-  message(uploadMessage,'Uploading private song…');
-  const upload=await api(`${cfg.url}/storage/v1/object/${BUCKET}/${encodePath(path)}`,{method:'POST',headers:{'Content-Type':file.type||'audio/mpeg','x-upsert':'false'},body:file});
+  message(uploadMessage,`Uploading to the ${targetLabel}…`);
+  const upload=await api(`${cfg.url}/storage/v1/object/${bucket}/${encodePath(path)}`,{method:'POST',headers:{'Content-Type':file.type||'audio/mpeg','x-upsert':'false'},body:file});
   if(!upload.ok){const e=await upload.json().catch(()=>({}));throw new Error(e.message||e.error||'Upload failed.')}
-  const add=await api(`${cfg.url}/rest/v1/special_tracks`,{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({title,storage_path:path,uploaded_by:session.user.id})});
-  if(!add.ok){const e=await add.json().catch(()=>({}));throw new Error(e.message||e.details||'Song uploaded, but catalog publishing failed.')}
-  uploadForm.reset();message(uploadMessage,'Published to the VIP playlist.','success');await loadTracks(true);
+  const add=await api(`${cfg.url}/rest/v1/${table}`,{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({title,storage_path:path,uploaded_by:session.user.id})});
+  if(!add.ok){
+    await api(`${cfg.url}/storage/v1/object/${bucket}/${encodePath(path)}`,{method:'DELETE'}).catch(()=>{});
+    const e=await add.json().catch(()=>({}));throw new Error(e.message||e.details||'Song uploaded, but publishing failed.')
+  }
+  uploadForm.reset();updateDestinationUI();
+  if(isPublic){
+    message(uploadMessage,'Published to the Public Player. Everyone can listen to it there.','success');
+  }else{
+    message(uploadMessage,'Published to the VIP membership playlist.','success');
+    await loadTracks(true);
+  }
 }
 
 function showLogin(){loginView.hidden=false;appView.hidden=true;logoutBtn.hidden=true}
@@ -121,6 +144,7 @@ loginForm.addEventListener('submit',async e=>{e.preventDefault();message(loginMe
 logoutBtn.addEventListener('click',()=>{audio.pause();audio.removeAttribute('src');audio.load();currentId=null;clearSession();showLogin()});
 refreshBtn.addEventListener('click',()=>loadTracks());
 uploadForm.addEventListener('submit',async e=>{e.preventDefault();if(!isAdmin)return;try{await uploadSong()}catch(err){message(uploadMessage,err.message,'error')}});
+songDestination?.addEventListener('change',updateDestinationUI);updateDestinationUI();
 
 mainPlayBtn?.addEventListener('click',async()=>{if(!currentId){if(tracks[0])await playTrack(tracks[0].id)}else if(audio.paused){try{await audio.play()}catch(e){message(libraryMessage,e.message,'error')}}else audio.pause()});
 prevBtn?.addEventListener('click',()=>playAdjacent(-1));
