@@ -1,12 +1,11 @@
 (() => {
+  const SESSION_KEY='soxlo_private_session_v1';
   const loginCard=document.querySelector('#loginView .login-card');
   if(!loginCard)return;
 
   let form=document.getElementById('signupForm');
   let msg=document.getElementById('signupMessage');
 
-  // Older page versions may not include the membership form in HTML.
-  // Create it only when it is missing; otherwise bind to the existing form.
   if(!form){
     const wrap=document.createElement('div');
     wrap.style.marginTop='22px';
@@ -47,8 +46,18 @@
     msg.className='message'+(type?` ${type}`:'');
   };
 
+  const friendlyError=raw=>{
+    const text=String(raw||'Could not create account.');
+    if(/maximum 2|membership is full|database error/i.test(text))return 'Membership is full. The maximum of 2 login accounts has been reached.';
+    if(/already registered|user already exists/i.test(text))return 'That email already has a membership. Use the login box above.';
+    if(/rate limit|too many requests/i.test(text))return 'Too many attempts. Please try again a little later.';
+    return text;
+  };
+
   form.addEventListener('submit',async e=>{
     e.preventDefault();
+    const submit=form.querySelector('button[type="submit"]');
+    if(submit)submit.disabled=true;
     setMsg('Creating member account…');
 
     try{
@@ -62,26 +71,33 @@
 
       const email=document.getElementById('signupEmail').value.trim();
       const password=document.getElementById('signupPassword').value;
+      const confirmUrl=new URL('members.html',location.href).href.split('#')[0];
 
-      const r=await fetch(`${url}/auth/v1/signup`,{
+      const r=await fetch(`${url}/auth/v1/signup?redirect_to=${encodeURIComponent(confirmUrl)}`,{
         method:'POST',
         headers:{apikey:anonKey,'Content-Type':'application/json'},
         body:JSON.stringify({email,password})
       });
 
       const data=await r.json().catch(()=>({}));
-      if(!r.ok){
-        const raw=String(data.msg||data.error_description||data.message||data.error||'Could not create account.');
-        if(/maximum 2|membership is full|database error/i.test(raw)){
-          throw new Error('Membership is full. The maximum of 2 login accounts has been reached.');
-        }
-        throw new Error(raw);
+      if(!r.ok)throw new Error(friendlyError(data.msg||data.error_description||data.message||data.error));
+
+      if(data.access_token&&data.user){
+        data.expires_at=Number(data.expires_at||0)||Math.floor(Date.now()/1000)+Number(data.expires_in||3600);
+        localStorage.setItem(SESSION_KEY,JSON.stringify(data));
+        setMsg('Membership created. Opening your Private Player…','success');
+        location.reload();
+        return;
       }
 
+      const loginEmail=document.getElementById('email');
+      if(loginEmail)loginEmail.value=email;
       form.reset();
-      setMsg('Account created. Check your email if confirmation is required, then sign in above.','success');
+      setMsg('Membership created. Check your email and tap the confirmation link. It will return you to the Private Player automatically.','success');
     }catch(err){
-      setMsg(err.message||'Could not create account.','error');
+      setMsg(friendlyError(err?.message),'error');
+    }finally{
+      if(submit)submit.disabled=false;
     }
   });
 })();
