@@ -10,7 +10,7 @@
   <link rel="manifest" href="members.webmanifest">
   <link rel="icon" href="soxlo-app-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="soxlo-app-icon.svg">
-  <link rel="stylesheet" href="members.css?v=20260903-2">
+  <link rel="stylesheet" href="members.css?v=20260903-3">
 </head>
 <body>
   <main class="member-shell">
@@ -33,6 +33,18 @@
           <button class="gold-btn" type="submit">Enter Private Player</button>
         </form>
         <p id="loginMessage" class="message" aria-live="polite"></p>
+
+        <div class="membership-create" style="margin-top:24px;padding-top:22px;border-top:1px solid #5c4317">
+          <p class="eyebrow">NEW MEMBER</p>
+          <h2 style="margin:6px 0 8px">Create Membership</h2>
+          <p class="muted">Create your private SOXLO login. Membership is limited to 2 accounts.</p>
+          <form id="signupForm">
+            <label>Email<input id="signupEmail" type="email" autocomplete="email" required></label>
+            <label>Password<input id="signupPassword" type="password" autocomplete="new-password" minlength="6" required></label>
+            <button class="gold-btn" type="submit">Create Membership</button>
+          </form>
+          <p id="signupMessage" class="message" aria-live="polite"></p>
+        </div>
       </div>
     </section>
 
@@ -41,38 +53,22 @@
         <div><p class="eyebrow">SOXLO PRODUCTION</p><h1>Private Player</h1><p class="muted">Your special-release library updates automatically when new tracks are published.</p></div>
         <button id="refreshBtn" class="ghost" type="button">Refresh library ↻</button>
       </div>
-
       <section class="player-card">
         <div class="artwork"><span>SOXLO</span><strong id="nowTitle">Choose a song</strong></div>
-        <div class="player-copy">
-          <p class="eyebrow">NOW PLAYING</p>
-          <h2 id="trackTitle">Private Release</h2>
-          <p>SOXLO Production</p>
-          <audio id="audio" controls controlsList="nodownload noremoteplayback" preload="metadata"></audio>
-        </div>
+        <div class="player-copy"><p class="eyebrow">NOW PLAYING</p><h2 id="trackTitle">Private Release</h2><p>SOXLO Production</p><audio id="audio" controls controlsList="nodownload noremoteplayback" preload="metadata"></audio></div>
       </section>
-
       <section class="library-card">
         <div class="section-head"><div><p class="eyebrow">PRIVATE COLLECTION</p><h2>Special Songs</h2></div><span id="trackCount">0 tracks</span></div>
-        <div id="trackList" class="track-list"></div>
-        <p id="libraryMessage" class="message" aria-live="polite"></p>
+        <div id="trackList" class="track-list"></div><p id="libraryMessage" class="message" aria-live="polite"></p>
       </section>
-
       <section id="adminPanel" class="admin-card" hidden>
-        <p class="eyebrow">OWNER TOOLS</p>
-        <h2>Upload a Special Song</h2>
-        <p class="muted">Uploads here are added to the private catalog and become available to signed-in members and the installed Private Player.</p>
-        <form id="uploadForm">
-          <label>Song title<input id="songTitle" type="text" required maxlength="120"></label>
-          <label>Audio file<input id="songFile" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" required></label>
-          <button class="gold-btn" type="submit">Upload & Publish</button>
-        </form>
+        <p class="eyebrow">OWNER TOOLS</p><h2>Upload a Special Song</h2><p class="muted">Uploads here are added to the private catalog and become available to signed-in members and the installed Private Player.</p>
+        <form id="uploadForm"><label>Song title<input id="songTitle" type="text" required maxlength="120"></label><label>Audio file<input id="songFile" type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac,.flac" required></label><button class="gold-btn" type="submit">Upload & Publish</button></form>
         <p id="uploadMessage" class="message" aria-live="polite"></p>
       </section>
     </section>
   </main>
-
   <script src="members.js?v=20260903-2"></script>
-  <script src="members-signup.js?v=20260903-1"></script>
+  <script src="members-signup.js?v=20260903-2"></script>
 </body>
 </html>
