@@ -1,4 +1,13 @@
 (() => {
+  // Add the private-members entry to the existing homepage navigation without changing the large index file.
+  const siteNav = document.querySelector('.nav nav');
+  if (siteNav && !siteNav.querySelector('a[href="members.html"]')) {
+    const privateLink = document.createElement('a');
+    privateLink.href = 'members.html';
+    privateLink.textContent = 'Private Music 🔒';
+    siteNav.insertBefore(privateLink, siteNav.firstChild);
+  }
+
   const style = document.createElement('style');
   style.textContent = `
     .soxlo-like-row{display:flex;align-items:center;gap:10px;margin-top:14px}
