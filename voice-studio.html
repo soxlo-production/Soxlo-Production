@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="SOXLO Voice Studio — private AI voice generation workspace.">
+<title>SOXLO Voice Studio</title>
+<link rel="icon" href="soxlo-app-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vip-menu.css?v=20260904-10">
+<style>
+:root{--gold:#d9b45a;--gold2:#f4df98;--line:#554018;--text:#f7f4ec;--muted:#9f998f;--ok:#8bd39a;--bad:#eea28b}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 3%,#332711 0,transparent 27%),radial-gradient(circle at 90% 28%,#1f180b 0,transparent 24%),linear-gradient(180deg,#080808,#040404);color:var(--text);font-family:Arial,Helvetica,sans-serif}.topbar{min-height:96px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);background:#090909f2;position:sticky;top:0;z-index:20;backdrop-filter:blur(14px)}.brand{text-decoration:none;display:flex;flex-direction:column;line-height:1}.brand strong{font-size:clamp(28px,5vw,46px);letter-spacing:7px;background:linear-gradient(180deg,#fff3aa,#e6b64a,#986514);-webkit-background-clip:text;background-clip:text;color:transparent}.brand span{margin-top:7px;font-size:11px;letter-spacing:4px;color:#e1b653}.wrap{width:min(1180px,94vw);margin:auto;padding:34px 0 72px}.hero{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:22px}.eyebrow{color:var(--gold);letter-spacing:3px;font-size:11px;font-weight:900}.hero h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(42px,7vw,74px);line-height:.98;margin:7px 0 13px}.hero h1 em{color:var(--gold2)}.hero p{color:var(--muted);line-height:1.65;max-width:760px}.mic{width:150px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:1px solid #6d511d;background:radial-gradient(circle,#d9b45a2e,transparent 58%),#0c0b08;box-shadow:0 0 60px #d9b45a20}.mic span{font-size:68px;filter:drop-shadow(0 0 18px #d9b45a55)}.status-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.status-card{border:1px solid #3c321d;border-radius:14px;background:#0d0c09;padding:13px 15px;color:#cfc3a0;font-size:11px;line-height:1.5}.status-card strong{display:block;color:#f0d984;margin-bottom:3px}.status-card.ok strong{color:var(--ok)}.status-card.bad strong{color:var(--bad)}.workspace{display:grid;grid-template-columns:1.22fr .78fr;gap:18px}.card{border:1px solid #392e19;border-radius:20px;background:linear-gradient(180deg,#121212,#0b0b0b);padding:21px;box-shadow:0 18px 50px #0008}.card h2{margin:0 0 16px;font-size:18px}.field{margin-bottom:15px}.field label,.field-head label{display:block;color:#d9cba9;font-size:11px;font-weight:900;margin-bottom:7px}.field-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.field-head label{margin:0}.field input,.field textarea,.field select{width:100%;border:1px solid #443820;background:#070707;color:#fff;border-radius:11px;padding:12px 13px;outline:none;font:inherit}.field textarea{min-height:260px;resize:vertical;line-height:1.55}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b45a17}.counter{color:#827c71;font-size:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}.voice-row{display:grid;grid-template-columns:1fr auto;gap:8px}.mini,.gold-btn,.ghost{cursor:pointer;border-radius:10px;font-weight:900}.mini,.ghost{border:1px solid #624a1c;background:#15110a;color:#efd689;padding:10px 12px}.gold-btn{width:100%;border:1px solid #ffe38d;background:linear-gradient(135deg,#765015,#d1a13d,#765015);color:#fff6cc;padding:16px;font-size:13px;letter-spacing:.6px;box-shadow:0 9px 24px #0006}.gold-btn:disabled,.mini:disabled,.ghost:disabled{opacity:.5;cursor:wait}.voice-meta{min-height:42px;margin-top:7px;padding:9px 10px;border:1px solid #2e281a;border-radius:9px;background:#090909;color:#948d80;font-size:10px;line-height:1.5}.settings{display:grid;gap:12px}.setting{padding:12px;border:1px solid #302817;border-radius:12px;background:#0a0907}.setting-head{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#d7c99f;font-weight:900}.setting input[type=range]{width:100%;accent-color:#d1a13d;margin:10px 0 0}.toggle{display:flex;align-items:center;gap:10px;color:#c4b797;font-size:11px}.toggle input{accent-color:#d1a13d}.helper{color:#817a6e;font-size:10px;line-height:1.45;margin-top:5px}.message{min-height:20px;margin-top:11px;color:#cfbf91;font-size:12px;line-height:1.5}.message.error{color:var(--bad)}.message.success{color:var(--ok)}.output{margin-top:18px;border:1px solid #60481b;border-radius:16px;background:radial-gradient(circle at 15% 20%,#d9b45a1d,transparent 34%),#0d0b08;padding:16px;display:none}.output.show{display:block}.output audio{width:100%;margin:11px 0}.output-title{font:700 21px Georgia,serif;color:#f2dc94}.output-actions{display:flex;gap:8px;flex-wrap:wrap}.output-actions a,.output-actions button{border:1px solid #735721;background:#17120a;color:#f1da91;padding:10px 12px;border-radius:9px;text-decoration:none;font-size:10px;font-weight:900;cursor:pointer}.history{margin-top:18px}.history-list{display:grid;gap:8px}.history-item{border:1px solid #302817;border-radius:11px;background:#090909;padding:11px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.history-item strong{font-size:11px}.history-item small{display:block;color:#777168;margin-top:4px}.history-item button{border:1px solid #5d461b;background:#15110a;color:#e8ce81;border-radius:8px;padding:8px 9px;font-size:10px;font-weight:900;cursor:pointer}.notice{margin-top:17px;padding:12px 14px;border-left:3px solid var(--gold);background:#15120b;color:#bcb29f;font-size:10px;line-height:1.55}@media(max-width:850px){.hero,.workspace,.status-row{grid-template-columns:1fr}.mic{display:none}.grid2{grid-template-columns:1fr}.topbar{align-items:flex-start}.brand strong{letter-spacing:5px}.brand span{letter-spacing:3px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="voice-studio.html"><strong>SOXLO</strong><span>VOICE STUDIO</span></a>
+  <details class="vip-menu">
+    <summary aria-label="Open SOXLO Voice Studio menu"><span class="menu-lines">☰</span><span>MENU</span></summary>
+    <div class="vip-menu-panel">
+      <div class="menu-heading">SOXLO STUDIO</div>
+      <a class="menu-action install-action" href="https://github.com/soxlo-production/Soxlo-Production/releases/download/soxlo-vip-latest/SOXLO-VIP.apk" target="_blank" rel="noopener noreferrer">⬇ Download SOXLO VIP APK</a>
+      <a class="menu-action" href="members.html#playlist">♫ VIP Playlist</a>
+      <a class="menu-action" href="studio.html?v=20260904-10">♫ SOXLO Music Studio</a>
+      <a class="menu-action" href="voice-studio.html?v=20260904-10">🎙 SOXLO Voice Studio</a>
+      <a class="menu-action" href="songs.html?v=20260904-10">♪ SOXLO Songs</a>
+      <a class="menu-action" href="index.html">⌂ Main Website</a>
+    </div>
+  </details>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div><div class="eyebrow">SOXLO PRODUCTION</div><h1>Your private<br><em>voice generator.</em></h1><p>Turn text into polished speech with your SOXLO voice library. Choose a voice, model, speed and delivery settings, then preview and download the finished audio.</p></div>
+    <div class="mic" aria-hidden="true"><span>🎙</span></div>
+  </section>
+
+  <section class="status-row">
+    <div class="status-card" id="loginStatus"><strong>Checking VIP session…</strong><span>Voice Studio is private and uses your SOXLO VIP sign-in.</span></div>
+    <div class="status-card" id="engineStatus"><strong>Checking voice engine…</strong><span>Your ElevenLabs API key remains on the SOXLO server.</span></div>
+  </section>
+
+  <section class="workspace">
+    <div class="card">
+      <h2>Text to Speech</h2>
+      <div class="field"><div class="field-head"><label for="voiceText">Text</label><span class="counter" id="charCount">0 / 5,000</span></div><textarea id="voiceText" maxlength="10000" placeholder="Type or paste what you want the voice to say..."></textarea></div>
+      <div class="field"><label for="voiceSearch">Find a voice</label><input id="voiceSearch" type="search" placeholder="Search name, accent, gender or style..."></div>
+      <div class="field"><label for="voiceSelect">Voice</label><div class="voice-row"><select id="voiceSelect"><option value="">Loading voices…</option></select><button class="mini" id="previewVoiceBtn" type="button">▶ PREVIEW</button></div><div class="voice-meta" id="voiceMeta">Choose a voice to see its details.</div><audio id="voicePreviewAudio" preload="none"></audio></div>
+      <button class="gold-btn" id="generateBtn" type="button">GENERATE SOXLO VOICE</button>
+      <div class="message" id="message" aria-live="polite">Ready.</div>
+
+      <section class="output" id="outputCard">
+        <div class="eyebrow">GENERATED AUDIO</div>
+        <div class="output-title" id="outputTitle">SOXLO Voice</div>
+        <audio id="outputAudio" controls preload="metadata"></audio>
+        <div class="output-actions"><a id="downloadBtn" href="#" download>DOWNLOAD AUDIO ↓</a><button id="regenerateBtn" type="button">REGENERATE ↻</button></div>
+      </section>
+
+      <section class="history">
+        <div class="field-head"><label>Recent generations</label><span class="counter">THIS SESSION</span></div>
+        <div class="history-list" id="historyList"><div class="voice-meta">Your generated clips will appear here.</div></div>
+      </section>
+    </div>
+
+    <aside class="card">
+      <h2>Voice Settings</h2>
+      <div class="field"><label for="modelSelect">Voice model</label><select id="modelSelect"><option value="eleven_v3">Eleven v3 — Highest expression</option><option value="eleven_flash_v2_5">Flash v2.5 — Fast + lower cost</option><option value="eleven_multilingual_v2">Multilingual v2 — Long-form stability</option></select><div class="helper" id="modelHelp">Eleven v3 is the most expressive model and supports up to 5,000 characters per generation.</div></div>
+      <div class="grid2"><div class="field"><label for="languageSelect">Language</label><select id="languageSelect"><option value="">Auto detect</option><option value="en">English</option><option value="no">Norwegian</option><option value="es">Spanish</option><option value="fil">Filipino</option><option value="de">German</option><option value="fr">French</option><option value="it">Italian</option><option value="pt">Portuguese</option></select></div><div class="field"><label for="formatSelect">Download format</label><select id="formatSelect"><option value="mp3_44100_128">MP3 44.1 kHz / 128 kbps</option><option value="mp3_22050_32">MP3 small / 32 kbps</option><option value="wav_44100">WAV 44.1 kHz — Pro plan</option><option value="wav_48000">WAV 48 kHz — Pro plan</option></select></div></div>
+      <div class="settings">
+        <div class="setting"><div class="setting-head"><span>Stability</span><span id="stabilityVal">50%</span></div><input id="stability" type="range" min="0" max="1" step="0.01" value="0.50"><div class="helper">Lower is more expressive; higher is more consistent.</div></div>
+        <div class="setting"><div class="setting-head"><span>Similarity</span><span id="similarityVal">75%</span></div><input id="similarity" type="range" min="0" max="1" step="0.01" value="0.75"><div class="helper">Controls how closely the output follows the selected voice.</div></div>
+        <div class="setting"><div class="setting-head"><span>Style</span><span id="styleVal">0%</span></div><input id="style" type="range" min="0" max="1" step="0.01" value="0"><div class="helper">Adds more style exaggeration when the selected voice supports it.</div></div>
+        <div class="setting"><div class="setting-head"><span>Speed</span><span id="speedVal">1.00×</span></div><input id="speed" type="range" min="0.7" max="1.2" step="0.01" value="1"><div class="helper">0.70× is slower and 1.20× is faster.</div></div>
+        <label class="setting toggle"><input id="speakerBoost" type="checkbox" checked><span><strong>Speaker boost</strong><br><span class="helper">Improves resemblance to the source voice at a small latency cost.</span></span></label>
+      </div>
+      <div class="notice">The ElevenLabs API key is read only by your Supabase Edge Function. It is not stored in this page, JavaScript file, or GitHub Pages.</div>
+    </aside>
+  </section>
+</main>
+<script src="voice-studio.js?v=20260904-10" defer></script>
+</body>
+</html>
