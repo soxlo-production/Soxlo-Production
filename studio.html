@@ -11,56 +11,89 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#070707;--panel:#111;--panel2:#17130b;--gold:#d9b45a;--gold2:#f0d984;--line:#5b4318;--text:#f7f4ec;--muted:#aaa59b}
+    :root{--bg:#070707;--panel:#111;--gold:#d9b45a;--gold2:#f0d984;--line:#5b4318;--text:#f7f4ec;--muted:#aaa59b}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 8%,#2b210f 0,transparent 26%),linear-gradient(180deg,#080808,#050505);color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh}a{color:inherit}
     .topbar{min-height:104px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px clamp(18px,4vw,52px);border-bottom:1px solid var(--line);background:#090909e8;backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}.brand{text-decoration:none;display:flex;flex-direction:column;line-height:1}.brand strong{font-size:clamp(28px,5vw,48px);letter-spacing:8px;background:linear-gradient(180deg,#fff3a9,#e6b64a,#9c6815);-webkit-background-clip:text;background-clip:text;color:transparent}.brand span{margin-top:7px;font-size:12px;letter-spacing:5px;color:#e1b653}.back{border:1px solid var(--gold);padding:11px 14px;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.5px;background:#15110a}
-    main{width:min(1180px,94vw);margin:0 auto;padding:42px 0 70px}.intro{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;margin-bottom:28px}.eyebrow{color:var(--gold);letter-spacing:3px;font-size:12px;font-weight:800}.intro h1{font-family:"Playfair Display",serif;font-size:clamp(42px,7vw,78px);line-height:.98;margin:8px 0 14px}.intro h1 em{color:var(--gold2);font-weight:600}.intro p{color:var(--muted);line-height:1.7;max-width:720px}.disc{width:min(270px,60vw);aspect-ratio:1;border-radius:50%;margin:auto;display:grid;place-items:center;background:repeating-radial-gradient(circle,#171717 0 5px,#0b0b0b 6px 11px);box-shadow:0 0 70px #d9b45a24,inset 0 0 0 1px #5d451b;position:relative}.disc:after{content:"S";display:grid;place-items:center;width:36%;aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#f4dc8c,#9d6814);color:#1b1305;font:800 58px Inter}
+    main{width:min(1180px,94vw);margin:0 auto;padding:42px 0 70px}.intro{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;margin-bottom:28px}.eyebrow{color:var(--gold);letter-spacing:3px;font-size:12px;font-weight:800}.intro h1{font-family:"Playfair Display",serif;font-size:clamp(42px,7vw,78px);line-height:.98;margin:8px 0 14px}.intro h1 em{color:var(--gold2);font-weight:600}.intro p{color:var(--muted);line-height:1.7;max-width:720px}.disc{width:min(270px,60vw);aspect-ratio:1;border-radius:50%;margin:auto;display:grid;place-items:center;background:repeating-radial-gradient(circle,#171717 0 5px,#0b0b0b 6px 11px);box-shadow:0 0 70px #d9b45a24,inset 0 0 0 1px #5d451b}.disc:after{content:"S";display:grid;place-items:center;width:36%;aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#f4dc8c,#9d6814);color:#1b1305;font:800 58px Inter}
     .studio-switch{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 24px;padding:18px 20px;border:1px solid #5a4319;border-radius:16px;background:linear-gradient(135deg,#17120a,#0d0d0d);box-shadow:0 12px 35px #0007}.studio-switch strong{display:block;color:#f4df99;font-size:16px}.studio-switch span{display:block;color:#9e9789;font-size:12px;margin-top:4px}.video-studio-link{flex:0 0 auto;text-decoration:none;border:1px solid #f4d676;background:linear-gradient(135deg,#775116,#c99434,#7a5216);color:#fff5c8;padding:13px 16px;border-radius:11px;font-size:12px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
-    .workspace{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.card{background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid #332a18;border-radius:18px;padding:22px;box-shadow:0 18px 50px #0008}.card h2{font-size:18px;margin:0 0 18px}.field{margin:0 0 16px}.field label{display:block;font-size:12px;font-weight:700;color:#d6c9aa;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid #40351f;background:#090909;color:#fff;padding:13px 14px;border-radius:10px;outline:none;font:inherit}.field textarea{min-height:138px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b45a18}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.create{width:100%;border:1px solid #f4d676;background:linear-gradient(135deg,#775116,#c99434,#7a5216);color:#fff5c8;padding:15px 18px;border-radius:12px;font-weight:800;letter-spacing:.8px;cursor:pointer;box-shadow:0 8px 24px #0008}.status{margin-top:12px;min-height:20px;color:#c9b98f;font-size:12px;line-height:1.6}.credits{display:grid;grid-template-columns:1fr 1fr;gap:12px}.credits .wide{grid-column:1/-1}.preview{border:1px solid #4a3715;background:radial-gradient(circle at 20% 30%,#e1b95426,transparent 35%),linear-gradient(135deg,#17120a,#0b0b0b);border-radius:14px;padding:18px;margin-top:16px}.preview-title{font-family:"Playfair Display",serif;font-size:26px;margin:4px 0 2px}.preview small{color:#9e9687}.notice{margin-top:20px;padding:14px 16px;border-left:3px solid var(--gold);background:#17130b;color:#bdb4a3;font-size:12px;line-height:1.6}
-    .finish{margin:20px 0 0;padding:18px;border:1px solid #4a3715;border-radius:14px;background:linear-gradient(135deg,#17130b,#0b0b0b)}.finish-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}.finish-head strong{color:#f0d984;font-size:15px}.finish-head span{display:block;color:#999184;font-size:11px;margin-top:4px}.badge{flex:0 0 auto;border:1px solid #80611f;color:#f4d77e;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:800;letter-spacing:.7px}.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-bottom:16px}.check{display:flex;gap:9px;align-items:flex-start;border:1px solid #302817;border-radius:10px;padding:10px;background:#090909}.check input{margin-top:2px;accent-color:#c99736}.check b{display:block;font-size:11px;color:#e3d5af}.check small{display:block;color:#817b70;font-size:10px;line-height:1.4;margin-top:2px}.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:14px 0}.pipeline div{padding:9px 7px;border-radius:9px;border:1px solid #3f321a;background:#0b0b0b;text-align:center;font-size:9px;color:#a49b87}.pipeline div:first-child{color:#f0d984;border-color:#78591f}
+    .workspace{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.card{background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid #332a18;border-radius:18px;padding:22px;box-shadow:0 18px 50px #0008}.card h2{font-size:18px;margin:0 0 18px}.field{margin:0 0 16px}.field label{display:block;font-size:12px;font-weight:700;color:#d6c9aa;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid #40351f;background:#090909;color:#fff;padding:13px 14px;border-radius:10px;outline:none;font:inherit}.field textarea{min-height:150px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b45a18}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .assist-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.assist-head label{margin:0}.assist-btn{border:1px solid #f0d67a;background:linear-gradient(135deg,#67450f,#b8872c,#704b12);color:#fff2bb;padding:8px 11px;border-radius:9px;font-size:10px;font-weight:800;letter-spacing:.6px;cursor:pointer;box-shadow:0 5px 15px #0007}.assist-btn:hover{filter:brightness(1.12)}.assist-btn:disabled{opacity:.55;cursor:not-allowed}.helper{margin-top:6px;color:#857f72;font-size:10px;line-height:1.4}
+    .create{width:100%;border:1px solid #f4d676;background:linear-gradient(135deg,#775116,#c99434,#7a5216);color:#fff5c8;padding:15px 18px;border-radius:12px;font-weight:800;letter-spacing:.8px;cursor:pointer;box-shadow:0 8px 24px #0008}.status{margin-top:12px;min-height:20px;color:#c9b98f;font-size:12px;line-height:1.6}.credits{display:grid;grid-template-columns:1fr 1fr;gap:12px}.credits .wide{grid-column:1/-1}.preview{border:1px solid #4a3715;background:radial-gradient(circle at 20% 30%,#e1b95426,transparent 35%),linear-gradient(135deg,#17120a,#0b0b0b);border-radius:14px;padding:18px;margin-top:16px}.preview-title{font-family:"Playfair Display",serif;font-size:26px;margin:4px 0 2px}.preview small{color:#9e9687}.notice{margin-top:20px;padding:14px 16px;border-left:3px solid var(--gold);background:#17130b;color:#bdb4a3;font-size:12px;line-height:1.6}
+    .finish{margin:20px 0;padding:18px;border:1px solid #4a3715;border-radius:14px;background:linear-gradient(135deg,#17130b,#0b0b0b)}.finish-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}.finish-head strong{color:#f0d984;font-size:15px}.finish-head span{display:block;color:#999184;font-size:11px;margin-top:4px}.badge{flex:0 0 auto;border:1px solid #80611f;color:#f4d77e;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:800;letter-spacing:.7px}.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-bottom:16px}.check{display:flex;gap:9px;align-items:flex-start;border:1px solid #302817;border-radius:10px;padding:10px;background:#090909}.check input{margin-top:2px;accent-color:#c99736}.check b{display:block;font-size:11px;color:#e3d5af}.check small{display:block;color:#817b70;font-size:10px;line-height:1.4;margin-top:2px}.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:14px 0}.pipeline div{padding:9px 7px;border-radius:9px;border:1px solid #3f321a;background:#0b0b0b;text-align:center;font-size:9px;color:#a49b87}.pipeline div:first-child{color:#f0d984;border-color:#78591f}
     @media(max-width:850px){.intro,.workspace{grid-template-columns:1fr}.disc{width:190px}.grid2,.credits,.checks{grid-template-columns:1fr}.credits .wide{grid-column:auto}.topbar{min-height:88px}.brand strong{letter-spacing:5px}.brand span{letter-spacing:3px}.studio-switch{align-items:flex-start;flex-direction:column}.video-studio-link{width:100%;text-align:center}.pipeline{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="index.html"><strong>SOXLO</strong><span>PRODUCTION STUDIO</span></a><a class="back" href="index.html">← Main Website</a></header>
-  <main>
-    <section class="intro"><div><div class="eyebrow">SOXLO PRODUCTION</div><h1>Your private<br><em>music studio.</em></h1><p>Create songs, shape the sound, write lyrics, and finish every release through a professional SOXLO mastering and quality-control pipeline.</p></div><div class="disc" aria-hidden="true"></div></section>
-    <section class="studio-switch"><div><strong>SOXLO Production Video Studio</strong><span>Create a complete professional music video from your finished song.</span></div><a class="video-studio-link" href="video-studio.html">OPEN VIDEO STUDIO →</a></section>
-    <section class="workspace">
-      <div class="card">
-        <h2>Create a Song</h2>
-        <div class="field"><label for="songTitle">Song title</label><input id="songTitle" placeholder="Enter song title"></div>
-        <div class="field"><label for="songPrompt">Song description</label><textarea id="songPrompt" placeholder="Describe the feeling, production, rhythm, instruments, arrangement and direction..."></textarea></div>
-        <div class="grid2"><div class="field"><label for="genre">Style / genre</label><input id="genre" placeholder="Deep house, R&B, pop..."></div><div class="field"><label for="voice">Vocal direction</label><input id="voice" placeholder="Smoky female, deep male..."></div></div>
-        <div class="field"><label for="lyrics">Lyrics</label><textarea id="lyrics" placeholder="Write or paste lyrics here..."></textarea></div>
-        <section class="finish">
-          <div class="finish-head"><div><strong>Professional Finish</strong><span>High-quality defaults for a release-ready master.</span></div><div class="badge">PRO QUALITY</div></div>
-          <div class="checks">
-            <label class="check"><input type="checkbox" checked><span><b>Studio mastering</b><small>Final balance, limiter and release loudness.</small></span></label>
-            <label class="check"><input type="checkbox" checked><span><b>Vocal polish</b><small>Clarity, de-essing, breath and harshness cleanup.</small></span></label>
-            <label class="check"><input type="checkbox" checked><span><b>Dynamics control</b><small>Preserve punch while controlling peaks.</small></span></label>
-            <label class="check"><input type="checkbox" checked><span><b>Stereo image</b><small>Wide, clean mix without phase problems.</small></span></label>
-            <label class="check"><input type="checkbox" checked><span><b>Artifact quality check</b><small>Detect glitches, clipping and weak generated sections.</small></span></label>
-            <label class="check"><input type="checkbox" checked><span><b>Auto-retry weak sections</b><small>Regenerate only sections that fail quality control.</small></span></label>
-          </div>
-          <div class="grid2"><div class="field"><label for="masterTarget">Mastering target</label><select id="masterTarget"><option>Balanced / Streaming</option><option>Dynamic / Audiophile</option><option>Loud / Club</option></select></div><div class="field"><label for="audioExport">Final audio export</label><select id="audioExport"><option>WAV 48 kHz + MP3</option><option>WAV 48 kHz</option><option>MP3 High Quality</option></select></div></div>
-          <div class="pipeline"><div>GENERATE</div><div>VOCAL POLISH</div><div>MIX QC</div><div>MASTER</div><div>FINAL EXPORT</div></div>
-        </section>
-        <button class="create" id="createBtn" type="button">CREATE & FINISH SONG</button><div class="status" id="status">Professional finish is enabled. Engine connection is still required before generation can run.</div>
+<header class="topbar"><a class="brand" href="index.html"><strong>SOXLO</strong><span>PRODUCTION STUDIO</span></a><a class="back" href="index.html">← Main Website</a></header>
+<main>
+  <section class="intro"><div><div class="eyebrow">SOXLO PRODUCTION</div><h1>Your private<br><em>music studio.</em></h1><p>Create songs, generate styles and lyrics, shape the sound, and finish every release through the SOXLO professional mastering and quality-control pipeline.</p></div><div class="disc" aria-hidden="true"></div></section>
+  <section class="studio-switch"><div><strong>SOXLO Production Video Studio</strong><span>Create a complete professional music video from your finished song.</span></div><a class="video-studio-link" href="video-studio.html">OPEN VIDEO STUDIO →</a></section>
+  <section class="workspace">
+    <div class="card">
+      <h2>Create a Song</h2>
+      <div class="field"><label for="songTitle">Song title</label><input id="songTitle" placeholder="Enter song title"></div>
+      <div class="field"><label for="songPrompt">Song description</label><textarea id="songPrompt" placeholder="Describe the theme, feeling, story, production, rhythm, instruments, arrangement and direction..."></textarea></div>
+      <div class="grid2">
+        <div class="field">
+          <div class="assist-head"><label for="genre">Style / genre</label><button class="assist-btn" id="generateStyleBtn" type="button">GENERATE STYLE ✦</button></div>
+          <textarea id="genre" placeholder="Deep house, R&B, pop, tempo, drums, bass, synths, atmosphere, arrangement..."></textarea>
+          <div class="helper">Uses the song title, description and vocal direction to build a detailed production style.</div>
+        </div>
+        <div class="field"><label for="voice">Vocal direction</label><textarea id="voice" placeholder="Smoky female, deep male, emotional, intimate, powerful chorus..."></textarea></div>
       </div>
-      <div class="card">
-        <h2>Release Credits</h2>
-        <div class="credits"><div class="field"><label for="artist">Artist</label><input id="artist" value="SOXLO Production"></div><div class="field"><label for="producer">Producer</label><input id="producer" value="SOXLO Production"></div><div class="field"><label for="songwriter">Songwriter</label><input id="songwriter"></div><div class="field"><label for="composer">Composer</label><input id="composer"></div><div class="field"><label for="label">Label</label><input id="label" value="SOXLO Production"></div><div class="field"><label for="year">Year</label><input id="year" value="2026"></div><div class="field wide"><label for="copyright">Copyright</label><input id="copyright" value="© 2026 SOXLO Production. All rights reserved."></div></div>
-        <div class="preview"><span class="eyebrow">CURRENT PROJECT</span><div class="preview-title" id="previewTitle">Untitled Song</div><small id="previewArtist">SOXLO Production</small></div>
-        <div class="notice">Your generator credentials will be stored privately on the server. The public website will only send the project settings; the secret keys will never be placed in GitHub Pages code.</div>
+      <div class="field">
+        <div class="assist-head"><label for="lyrics">Lyrics</label><button class="assist-btn" id="generateLyricsBtn" type="button">GENERATE LYRICS ✦</button></div>
+        <textarea id="lyrics" placeholder="Write or paste lyrics here, or press Generate Lyrics..."></textarea>
+        <div class="helper">Builds complete structured lyrics from your song title, description, style and vocal direction.</div>
       </div>
-    </section>
-  </main>
-  <script>
-    const title=document.getElementById('songTitle'),artist=document.getElementById('artist');
-    const update=()=>{document.getElementById('previewTitle').textContent=title.value.trim()||'Untitled Song';document.getElementById('previewArtist').textContent=artist.value.trim()||'SOXLO Production'};
-    title.addEventListener('input',update);artist.addEventListener('input',update);
-    document.getElementById('createBtn').addEventListener('click',()=>{const p=document.getElementById('songPrompt').value.trim();const s=document.getElementById('status');if(!p){s.textContent='Add a song description first.';return;}s.textContent='Project is configured for generation → vocal polish → mix quality control → mastering → final export. Connect the private music engine credentials to run it.'});
-  </script>
+
+      <section class="finish">
+        <div class="finish-head"><div><strong>Professional Finish</strong><span>High-quality defaults for a release-ready master.</span></div><div class="badge">PRO QUALITY</div></div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" checked><span><b>Studio mastering</b><small>Final balance, limiter and release loudness.</small></span></label>
+          <label class="check"><input type="checkbox" checked><span><b>Vocal polish</b><small>Clarity, de-essing, breath and harshness cleanup.</small></span></label>
+          <label class="check"><input type="checkbox" checked><span><b>Dynamics control</b><small>Preserve punch while controlling peaks.</small></span></label>
+          <label class="check"><input type="checkbox" checked><span><b>Stereo image</b><small>Wide, clean mix without phase problems.</small></span></label>
+          <label class="check"><input type="checkbox" checked><span><b>Artifact quality check</b><small>Detect glitches, clipping and weak generated sections.</small></span></label>
+          <label class="check"><input type="checkbox" checked><span><b>Auto-retry weak sections</b><small>Regenerate only sections that fail quality control.</small></span></label>
+        </div>
+        <div class="grid2"><div class="field"><label for="masterTarget">Mastering target</label><select id="masterTarget"><option>Balanced / Streaming</option><option>Dynamic / Audiophile</option><option>Loud / Club</option></select></div><div class="field"><label for="audioExport">Final audio export</label><select id="audioExport"><option>WAV 48 kHz + MP3</option><option>WAV 48 kHz</option><option>MP3 High Quality</option></select></div></div>
+        <div class="pipeline"><div>GENERATE</div><div>VOCAL POLISH</div><div>MIX QC</div><div>MASTER</div><div>FINAL EXPORT</div></div>
+      </section>
+      <button class="create" id="createBtn" type="button">CREATE & FINISH SONG</button>
+      <div class="status" id="status">Style, lyric and music engine connections are ready to be connected to your private credentials.</div>
+    </div>
+
+    <div class="card">
+      <h2>Release Credits</h2>
+      <div class="credits"><div class="field"><label for="artist">Artist</label><input id="artist" value="SOXLO Production"></div><div class="field"><label for="producer">Producer</label><input id="producer" value="SOXLO Production"></div><div class="field"><label for="songwriter">Songwriter</label><input id="songwriter"></div><div class="field"><label for="composer">Composer</label><input id="composer"></div><div class="field"><label for="label">Label</label><input id="label" value="SOXLO Production"></div><div class="field"><label for="year">Year</label><input id="year" value="2026"></div><div class="field wide"><label for="copyright">Copyright</label><input id="copyright" value="© 2026 SOXLO Production. All rights reserved."></div></div>
+      <div class="preview"><span class="eyebrow">CURRENT PROJECT</span><div class="preview-title" id="previewTitle">Untitled Song</div><small id="previewArtist">SOXLO Production</small></div>
+      <div class="notice">Your generator credentials will be stored privately on the server. The public website will only send project settings; secret keys will never be placed in GitHub Pages code.</div>
+    </div>
+  </section>
+</main>
+<script>
+  const title=document.getElementById('songTitle'),artist=document.getElementById('artist'),status=document.getElementById('status');
+  const update=()=>{document.getElementById('previewTitle').textContent=title.value.trim()||'Untitled Song';document.getElementById('previewArtist').textContent=artist.value.trim()||'SOXLO Production'};
+  title.addEventListener('input',update);artist.addEventListener('input',update);
+
+  document.getElementById('generateStyleBtn').addEventListener('click',()=>{
+    const prompt=document.getElementById('songPrompt').value.trim();
+    if(!prompt){status.textContent='Add a song description first so the Style Generator knows what you want.';return;}
+    status.textContent='Style Generator is ready. Connect the private text-generation credential to generate the production style directly into this field.';
+  });
+
+  document.getElementById('generateLyricsBtn').addEventListener('click',()=>{
+    const prompt=document.getElementById('songPrompt').value.trim();
+    if(!prompt){status.textContent='Add a song description first so the Lyrics Generator knows the story and feeling.';return;}
+    status.textContent='Lyrics Generator is ready. Connect the private text-generation credential to generate complete structured lyrics directly into the Lyrics field.';
+  });
+
+  document.getElementById('createBtn').addEventListener('click',()=>{
+    const p=document.getElementById('songPrompt').value.trim();
+    if(!p){status.textContent='Add a song description first.';return;}
+    status.textContent='Project is configured for song generation → vocal polish → mix quality control → mastering → final export. Connect the private music engine credentials to run it.';
+  });
+</script>
 </body>
 </html>
