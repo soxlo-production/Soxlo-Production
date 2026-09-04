@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="SOXLO Production Studio — private music creation workspace.">
+  <title>SOXLO Production Studio</title>
+  <link rel="icon" href="soxlo-app-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#070707;--panel:#111;--panel2:#17130b;--gold:#d9b45a;--gold2:#f0d984;--line:#5b4318;--text:#f7f4ec;--muted:#aaa59b}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 8%,#2b210f 0,transparent 26%),linear-gradient(180deg,#080808,#050505);color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh}
+    a{color:inherit}.topbar{min-height:104px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px clamp(18px,4vw,52px);border-bottom:1px solid var(--line);background:#090909e8;backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}
+    .brand{text-decoration:none;display:flex;flex-direction:column;line-height:1}.brand strong{font-size:clamp(28px,5vw,48px);letter-spacing:8px;background:linear-gradient(180deg,#fff3a9,#e6b64a,#9c6815);-webkit-background-clip:text;background-clip:text;color:transparent}.brand span{margin-top:7px;font-size:12px;letter-spacing:5px;color:#e1b653}.back{border:1px solid var(--gold);padding:11px 14px;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.5px;background:#15110a}
+    main{width:min(1180px,94vw);margin:0 auto;padding:42px 0 70px}.intro{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;margin-bottom:28px}.eyebrow{color:var(--gold);letter-spacing:3px;font-size:12px;font-weight:800}.intro h1{font-family:"Playfair Display",serif;font-size:clamp(42px,7vw,78px);line-height:.98;margin:8px 0 14px}.intro h1 em{color:var(--gold2);font-weight:600}.intro p{color:var(--muted);line-height:1.7;max-width:720px}.disc{width:min(270px,60vw);aspect-ratio:1;border-radius:50%;margin:auto;display:grid;place-items:center;background:repeating-radial-gradient(circle,#171717 0 5px,#0b0b0b 6px 11px);box-shadow:0 0 70px #d9b45a24,inset 0 0 0 1px #5d451b;position:relative}.disc:after{content:"S";display:grid;place-items:center;width:36%;aspect-ratio:1;border-radius:50%;background:linear-gradient(145deg,#f4dc8c,#9d6814);color:#1b1305;font:800 58px Inter}
+    .workspace{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}.card{background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid #332a18;border-radius:18px;padding:22px;box-shadow:0 18px 50px #0008}.card h2{font-size:18px;margin:0 0 18px}.field{margin:0 0 16px}.field label{display:block;font-size:12px;font-weight:700;color:#d6c9aa;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid #40351f;background:#090909;color:#fff;padding:13px 14px;border-radius:10px;outline:none;font:inherit}.field textarea{min-height:138px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b45a18}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.create{width:100%;border:1px solid #f4d676;background:linear-gradient(135deg,#775116,#c99434,#7a5216);color:#fff5c8;padding:15px 18px;border-radius:12px;font-weight:800;letter-spacing:.8px;cursor:pointer;box-shadow:0 8px 24px #0008}.status{margin-top:12px;min-height:20px;color:#c9b98f;font-size:12px}.credits{display:grid;grid-template-columns:1fr 1fr;gap:12px}.credits .wide{grid-column:1/-1}.preview{border:1px solid #4a3715;background:radial-gradient(circle at 20% 30%,#e1b95426,transparent 35%),linear-gradient(135deg,#17120a,#0b0b0b);border-radius:14px;padding:18px;margin-top:16px}.preview-title{font-family:"Playfair Display",serif;font-size:26px;margin:4px 0 2px}.preview small{color:#9e9687}.notice{margin-top:20px;padding:14px 16px;border-left:3px solid var(--gold);background:#17130b;color:#bdb4a3;font-size:12px;line-height:1.6}
+    @media(max-width:850px){.intro,.workspace{grid-template-columns:1fr}.disc{width:190px}.grid2,.credits{grid-template-columns:1fr}.credits .wide{grid-column:auto}.topbar{min-height:88px}.brand strong{letter-spacing:5px}.brand span{letter-spacing:3px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><strong>SOXLO</strong><span>PRODUCTION STUDIO</span></a>
+    <a class="back" href="index.html">← Main Website</a>
+  </header>
+  <main>
+    <section class="intro">
+      <div><div class="eyebrow">SOXLO PRODUCTION</div><h1>Your private<br><em>music studio.</em></h1><p>Create songs, shape the sound, write lyrics, and enter your own release credits in one dedicated SOXLO workspace.</p></div>
+      <div class="disc" aria-hidden="true"></div>
+    </section>
+
+    <section class="workspace">
+      <div class="card">
+        <h2>Create a Song</h2>
+        <div class="field"><label for="songTitle">Song title</label><input id="songTitle" placeholder="Enter song title"></div>
+        <div class="field"><label for="songPrompt">Song description</label><textarea id="songPrompt" placeholder="Describe the feeling, production, rhythm, instruments and direction..."></textarea></div>
+        <div class="grid2">
+          <div class="field"><label for="genre">Style / genre</label><input id="genre" placeholder="Deep house, R&B, pop..."></div>
+          <div class="field"><label for="voice">Vocal direction</label><input id="voice" placeholder="Smoky female, deep male..."></div>
+        </div>
+        <div class="field"><label for="lyrics">Lyrics</label><textarea id="lyrics" placeholder="Write or paste lyrics here..."></textarea></div>
+        <button class="create" id="createBtn" type="button">CREATE SONG</button>
+        <div class="status" id="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Release Credits</h2>
+        <div class="credits">
+          <div class="field"><label for="artist">Artist</label><input id="artist" value="SOXLO Production"></div>
+          <div class="field"><label for="producer">Producer</label><input id="producer" value="SOXLO Production"></div>
+          <div class="field"><label for="songwriter">Songwriter</label><input id="songwriter"></div>
+          <div class="field"><label for="composer">Composer</label><input id="composer"></div>
+          <div class="field"><label for="label">Label</label><input id="label" value="SOXLO Production"></div>
+          <div class="field"><label for="year">Year</label><input id="year" value="2026"></div>
+          <div class="field wide"><label for="copyright">Copyright</label><input id="copyright" value="© 2026 SOXLO Production. All rights reserved."></div>
+        </div>
+        <div class="preview">
+          <span class="eyebrow">CURRENT PROJECT</span>
+          <div class="preview-title" id="previewTitle">Untitled Song</div>
+          <small id="previewArtist">SOXLO Production</small>
+        </div>
+        <div class="notice">The studio interface is ready. The music engine connection will be added securely on the server side so private credentials are never exposed in the website code.</div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const title=document.getElementById('songTitle'),artist=document.getElementById('artist');
+    const update=()=>{document.getElementById('previewTitle').textContent=title.value.trim()||'Untitled Song';document.getElementById('previewArtist').textContent=artist.value.trim()||'SOXLO Production'};
+    title.addEventListener('input',update);artist.addEventListener('input',update);
+    document.getElementById('createBtn').addEventListener('click',()=>{document.getElementById('status').textContent='Studio engine connection is the next setup step.'});
+  </script>
+</body>
+</html>
