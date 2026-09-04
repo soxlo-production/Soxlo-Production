@@ -1,5 +1,5 @@
-const CACHE='soxlo-player-v5-20260904-1210';
-const SHELL=['./','./index.html','./style.css','./posters.css','./script.js','./poster-fix.js','./pwa.js','./manifest.webmanifest','./members.html','./members.css','./vip-menu.css','./members.js','./members.webmanifest','./studio.html','./studio.js','./songs.html','./supabase-config.json','./soxlo-app-icon.svg'];
+const CACHE='soxlo-player-v6-20260904-2250';
+const SHELL=['./','./index.html','./style.css','./posters.css','./script.js','./poster-fix.js','./pwa.js','./manifest.webmanifest','./members.html','./members.css','./vip-menu.css','./members.js','./members.webmanifest','./studio.html','./studio.js','./voice-studio.html','./voice-studio.js','./songs.html','./supabase-config.json','./soxlo-app-icon.svg'];
 self.addEventListener('install',event=>{
   self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL).catch(()=>{})));
