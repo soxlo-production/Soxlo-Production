@@ -15,6 +15,7 @@ const refs={
 };
 const styleButtons=[$('topStyleBtn'),$('generateStyleBtn')].filter(Boolean);
 const lyricButtons=[$('topLyricsBtn'),$('generateLyricsBtn')].filter(Boolean);
+let engineState={checked:false,ok:true,code:'UNKNOWN',message:'Music engine has not been checked yet.'};
 
 function setMessage(text,type=''){
   refs.status.textContent=text;
@@ -115,6 +116,8 @@ async function createSongs(){
   try{
     const s=await currentSession();
     if(!s?.access_token){setMessage('Sign in on the SOXLO VIP page first, then return to the Studio.','error');setCard(refs.loginStatus,'VIP sign-in required','Open the VIP page and sign in before creating audio.','bad');return}
+    const canCreate=await checkEngine(s);
+    if(!canCreate){setMessage(engineState.message,'error');return}
     if(!refs.genre.value.trim())refs.genre.value=localStyle();
     if(!refs.prompt.value.trim()&&!refs.lyrics.value.trim())refs.prompt.value='Create an original professional song with a memorable hook and polished modern production.';
     const batchId=uuid();
@@ -129,9 +132,24 @@ async function createSongs(){
   finally{refs.createBtn.disabled=false;refs.createBtn.textContent='CREATE 2 SONG VERSIONS'}
 }
 
+async function checkEngine(s){
+  if(!s?.access_token){engineState={checked:false,ok:false,code:'VIP_SIGNIN_REQUIRED',message:'Sign in to SOXLO VIP before checking the music engine.'};setCard(refs.engineStatus,'Music engine not checked','Sign in to VIP first. Style and lyric tools still work.');return false}
+  try{
+    const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),8000);
+    let r;try{r=await fetch(`${SUPABASE_URL}/functions/v1/studio-music-status`,{method:'GET',signal:ctrl.signal,headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${s.access_token}`}})}finally{clearTimeout(timer)}
+    const d=await r.json().catch(()=>({}));
+    if(r.status===401){engineState={checked:true,ok:false,code:'VIP_SESSION_EXPIRED',message:'Your VIP session expired. Sign in again.'};setCard(refs.engineStatus,'VIP session expired',engineState.message,'bad');return false}
+    if(!r.ok)throw new Error(d.message||`Engine check returned ${r.status}`);
+    engineState={checked:true,ok:!!d.ok,code:d.code||'UNKNOWN',message:d.message||''};
+    if(d.ok)setCard(refs.engineStatus,'Music engine ready',d.tier?`ElevenLabs ${d.tier} plan connected.`:'ElevenLabs Music API is connected.','ok');
+    else setCard(refs.engineStatus,'Music engine needs attention',engineState.message,'bad');
+    return !!d.ok;
+  }catch(e){engineState={checked:false,ok:true,code:'CHECK_UNAVAILABLE',message:'Could not check the music engine right now. Create will still try the live connection.'};setCard(refs.engineStatus,'Music engine check unavailable',engineState.message);return true}
+}
+
 async function checkLogin(){
-  try{const s=await currentSession();if(s?.access_token)setCard(refs.loginStatus,'VIP session active','Private SOXLO Studio access is ready.','ok');else setCard(refs.loginStatus,'Not signed in','Style and lyric tools work, but audio creation requires VIP sign-in.','bad')}
-  catch{setCard(refs.loginStatus,'VIP session expired','Sign in again on the VIP page before creating audio.','bad')}
+  try{const s=await currentSession();if(s?.access_token){setCard(refs.loginStatus,'VIP session active','Private SOXLO Studio access is ready.','ok');await checkEngine(s)}else{setCard(refs.loginStatus,'Not signed in','Style and lyric tools work, but audio creation requires VIP sign-in.','bad');setCard(refs.engineStatus,'Music engine not checked','Sign in to VIP first. Style and lyric tools still work.')}}
+  catch{setCard(refs.loginStatus,'VIP session expired','Sign in again on the VIP page before creating audio.','bad');setCard(refs.engineStatus,'Music engine not checked','Sign in again to check the audio engine.','bad')}
 }
 
 styleButtons.forEach(b=>b?.addEventListener('click',()=>generate('style')));
@@ -144,4 +162,3 @@ refs.createBtn?.addEventListener('click',createSongs);
 
 restoreDraft();
 checkLogin();
-setCard(refs.engineStatus,'Studio tools ready','Style and lyric generators are active. Audio generation is checked when you press Create.','ok');
