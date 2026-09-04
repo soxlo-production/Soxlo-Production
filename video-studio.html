@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="SOXLO Production Video Studio — private video creation workspace.">
+  <title>SOXLO Production Video Studio</title>
+  <link rel="icon" href="soxlo-app-icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#d9b45a;--gold2:#f3d77e;--line:#594217;--text:#f7f4ed;--muted:#aaa49a}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 80% 10%,#2d220f 0,transparent 25%),linear-gradient(#080808,#040404);color:var(--text);font-family:Inter,Arial,sans-serif}
+    .topbar{min-height:104px;padding:22px clamp(18px,4vw,52px);display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line);background:#090909e8;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}
+    .brand{text-decoration:none;color:inherit;display:flex;flex-direction:column;line-height:1}.brand strong{font-size:clamp(27px,5vw,47px);letter-spacing:8px;background:linear-gradient(180deg,#fff2a3,#e4b447,#a06a14);-webkit-background-clip:text;background-clip:text;color:transparent}.brand span{margin-top:7px;color:#e0b451;letter-spacing:4px;font-size:11px}.navlinks{display:flex;gap:10px}.navlinks a{text-decoration:none;color:#f3df9d;border:1px solid var(--gold);background:#15110a;padding:11px 14px;font-size:12px;font-weight:800}
+    main{width:min(1180px,94vw);margin:auto;padding:44px 0 70px}.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;margin-bottom:28px}.eyebrow{font-size:12px;letter-spacing:3px;color:var(--gold);font-weight:800}.hero h1{font-family:"Playfair Display",serif;font-size:clamp(42px,7vw,76px);line-height:.98;margin:8px 0 14px}.hero h1 em{color:var(--gold2)}.hero p{color:var(--muted);line-height:1.7;max-width:720px}.screen{aspect-ratio:16/10;border:1px solid #644918;border-radius:18px;background:radial-gradient(circle at 50% 50%,#d5a63a33,transparent 35%),linear-gradient(135deg,#18130a,#080808);box-shadow:0 0 70px #d9b45a20;display:grid;place-items:center;overflow:hidden}.screen:before{content:'▶';display:grid;place-items:center;width:86px;height:86px;border-radius:50%;background:linear-gradient(145deg,#f0d479,#9c6815);color:#1c1406;font-size:34px;box-shadow:0 0 35px #d9b45a55}
+    .workspace{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.card{background:linear-gradient(180deg,#121212,#0d0d0d);border:1px solid #332a18;border-radius:18px;padding:22px;box-shadow:0 18px 50px #0008}.card h2{margin:0 0 18px;font-size:18px}.field{margin-bottom:16px}.field label{display:block;margin-bottom:7px;color:#d5c8a7;font-size:12px;font-weight:700}.field input,.field textarea,.field select{width:100%;background:#090909;border:1px solid #40351f;color:#fff;border-radius:10px;padding:13px 14px;font:inherit;outline:none}.field textarea{min-height:145px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b45a18}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.create{width:100%;border:1px solid #f4d676;background:linear-gradient(135deg,#775116,#c99434,#7a5216);color:#fff5c8;padding:15px;border-radius:12px;font-weight:800;letter-spacing:.8px;cursor:pointer}.timeline{margin-top:16px;padding:16px;border-radius:12px;border:1px solid #493814;background:#0a0a0a}.timeline-bar{height:58px;border-radius:9px;background:linear-gradient(90deg,#6d4a15,#d2a23f 32%,#8b5d18 64%,#c4983a);position:relative;overflow:hidden}.timeline-bar:after{content:'';position:absolute;left:38%;top:0;bottom:0;width:2px;background:#fff2ae;box-shadow:0 0 12px #fff}.meta{display:grid;grid-template-columns:1fr 1fr;gap:12px}.notice{margin-top:18px;border-left:3px solid var(--gold);background:#17130b;padding:14px 16px;color:#bdb4a3;font-size:12px;line-height:1.6}
+    @media(max-width:850px){.hero,.workspace{grid-template-columns:1fr}.grid2,.meta{grid-template-columns:1fr}.topbar{min-height:88px}.brand strong{letter-spacing:5px}.brand span{letter-spacing:2.5px}.navlinks a:first-child{display:none}}
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="studio.html"><strong>SOXLO</strong><span>PRODUCTION VIDEO STUDIO</span></a>
+  <div class="navlinks"><a href="studio.html">← Music Studio</a><a href="index.html">Main Website</a></div>
+</header>
+<main>
+  <section class="hero">
+    <div><div class="eyebrow">SOXLO PRODUCTION</div><h1>Build the<br><em>visual story.</em></h1><p>Create concepts for music videos, visualizers, cover-motion clips and other SOXLO video projects from one private workspace.</p></div>
+    <div class="screen" aria-hidden="true"></div>
+  </section>
+
+  <section class="workspace">
+    <div class="card">
+      <h2>Create a Video Project</h2>
+      <div class="field"><label for="videoTitle">Project title</label><input id="videoTitle" placeholder="Enter video title"></div>
+      <div class="field"><label for="videoPrompt">Video concept</label><textarea id="videoPrompt" placeholder="Describe the scenes, atmosphere, camera movement, lighting, characters and visual style..."></textarea></div>
+      <div class="grid2">
+        <div class="field"><label for="format">Format</label><select id="format"><option>16:9 Music Video</option><option>9:16 Vertical</option><option>1:1 Square</option><option>16:9 Visualizer</option></select></div>
+        <div class="field"><label for="duration">Target duration</label><input id="duration" placeholder="e.g. 3:30"></div>
+      </div>
+      <div class="field"><label for="track">Song / audio</label><input id="track" placeholder="Choose or connect a SOXLO song"></div>
+      <button class="create" id="videoCreateBtn" type="button">CREATE VIDEO PROJECT</button>
+      <div class="timeline"><div class="eyebrow" style="margin-bottom:10px">PROJECT TIMELINE</div><div class="timeline-bar"></div></div>
+    </div>
+
+    <div class="card">
+      <h2>Video Credits</h2>
+      <div class="meta">
+        <div class="field"><label>Artist</label><input value="SOXLO Production"></div>
+        <div class="field"><label>Production</label><input value="SOXLO Production"></div>
+        <div class="field"><label>Director</label><input></div>
+        <div class="field"><label>Editor</label><input></div>
+        <div class="field"><label>Year</label><input value="2026"></div>
+        <div class="field"><label>Project type</label><input value="Music Video"></div>
+      </div>
+      <div class="notice">The Video Studio workspace is installed. The actual video-generation/rendering engine can be connected securely in a later step without exposing private credentials in the public website code.</div>
+    </div>
+  </section>
+</main>
+<script>document.getElementById('videoCreateBtn').addEventListener('click',()=>{alert('SOXLO Production Video Studio is ready for the video-engine connection.')});</script>
+</body>
+</html>
