@@ -16,10 +16,9 @@ const refs={
 };
 
 let voices=[];
-let activeObjectUrl='';
 let history=[];
 
-function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));}
 function setMessage(text,type=''){refs.message.textContent=text;refs.message.className='message'+(type?` ${type}`:'');}
 function setCard(el,title,text,type=''){
   el.className='status-card'+(type?` ${type}`:'');
@@ -135,23 +134,23 @@ function previewVoice(){
 
 function safeFileName(v){return String(v||'soxlo-voice').replace(/[^a-z0-9_-]+/gi,'-').replace(/^-+|-+$/g,'').slice(0,70)||'soxlo-voice'}
 function setOutput(blob,voiceName,format,model){
-  if(activeObjectUrl)URL.revokeObjectURL(activeObjectUrl);
-  activeObjectUrl=URL.createObjectURL(blob);
-  refs.outputAudio.src=activeObjectUrl;
+  const objectUrl=URL.createObjectURL(blob);
+  refs.outputAudio.src=objectUrl;
   refs.outputTitle.textContent=`${voiceName} · SOXLO Voice`;
   const ext=format.startsWith('wav_')?'wav':'mp3';
-  refs.download.href=activeObjectUrl;
-  refs.download.download=`${safeFileName(voiceName)}-SOXLO-${Date.now()}.${ext}`;
+  const filename=`${safeFileName(voiceName)}-SOXLO-${Date.now()}.${ext}`;
+  refs.download.href=objectUrl;
+  refs.download.download=filename;
   refs.outputCard.classList.add('show');
-  history.unshift({url:activeObjectUrl,name:voiceName,format,model,created:new Date()});
-  history=history.slice(0,8);
+  history.unshift({url:objectUrl,name:voiceName,format,model,filename,created:new Date()});
+  while(history.length>8){const old=history.pop();try{URL.revokeObjectURL(old.url)}catch{}}
   renderHistory();
   refs.outputCard.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function renderHistory(){
   if(!history.length){refs.history.innerHTML='<div class="voice-meta">Your generated clips will appear here.</div>';return}
   refs.history.innerHTML=history.map((h,i)=>`<div class="history-item"><div><strong>${esc(h.name)}</strong><small>${esc(h.model.replace('eleven_','').replaceAll('_',' '))} · ${esc(h.created.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}))}</small></div><button type="button" data-play="${i}">PLAY ▶</button></div>`).join('');
-  refs.history.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>{const h=history[Number(b.dataset.play)];if(!h)return;refs.outputAudio.src=h.url;refs.outputTitle.textContent=`${h.name} · SOXLO Voice`;refs.download.href=h.url;refs.outputCard.classList.add('show');refs.outputAudio.play().catch(()=>{});});
+  refs.history.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>{const h=history[Number(b.dataset.play)];if(!h)return;refs.outputAudio.src=h.url;refs.outputTitle.textContent=`${h.name} · SOXLO Voice`;refs.download.href=h.url;refs.download.download=h.filename;refs.outputCard.classList.add('show');refs.outputAudio.play().catch(()=>{});});
 }
 
 async function generate(){
