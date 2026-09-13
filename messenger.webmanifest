@@ -1,0 +1,20 @@
+{
+  "name": "SOXLO Messenger",
+  "short_name": "SOXLO",
+  "description": "Private SOXLO Messenger with secure chat and calls.",
+  "start_url": "./messenger.html?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
+  "background_color": "#0b0d10",
+  "theme_color": "#b58a37",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "soxlo-app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
