@@ -2,11 +2,18 @@ package com.soxlo.messenger;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -17,13 +24,20 @@ public class MainActivity extends Activity {
     private WebView webView;
     private PermissionRequest pendingWebPermission;
     private static final int MEDIA_PERMISSION_REQUEST = 42;
+    private static final int NOTIFICATION_PERMISSION_REQUEST = 43;
     private static final String APP_HOST = "soxlo-production.github.io";
+    private static final String CHANNEL_ID = "soxlo_messages";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         WebView.setWebContentsDebuggingEnabled(false);
+        createNotificationChannel();
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST);
+        }
+
         webView = new WebView(this);
         setContentView(webView);
 
@@ -39,10 +53,17 @@ public class MainActivity extends Activity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) settings.setSafeBrowsingEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.1");
 
         CookieManager.getInstance().setAcceptCookie(false);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
+
+        webView.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void notify(String title, String body) {
+                runOnUiThread(() -> showNotification(title, body));
+            }
+        }, "SoxloAndroid");
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
@@ -67,6 +88,36 @@ public class MainActivity extends Activity {
         });
 
         webView.loadUrl("https://soxlo-production.github.io/Soxlo-Production/messenger.html?android=1");
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SOXLO messages", NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("SOXLO Messenger message and call notifications");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
+    private void showNotification(String title, String body) {
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return;
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) flags |= PendingIntent.FLAG_IMMUTABLE;
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, flags);
+
+        Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                ? new Notification.Builder(this, CHANNEL_ID)
+                : new Notification.Builder(this);
+        builder.setSmallIcon(android.R.drawable.ic_dialog_email)
+                .setContentTitle(title == null || title.isEmpty() ? "SOXLO Messenger" : title)
+                .setContentText(body == null ? "New secure message" : body)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(Notification.PRIORITY_HIGH);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify((int) (System.currentTimeMillis() & 0xfffffff), builder.build());
     }
 
     @Override
