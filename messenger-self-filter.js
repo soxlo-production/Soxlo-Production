@@ -4,14 +4,23 @@
     if(typeof loadContacts!=='function'||typeof renderContacts!=='function')return false;
     if(window.__soxloSelfFilterInstalled)return true;
     window.__soxloSelfFilterInstalled=true;
-    const baseLoadContacts=loadContacts;
+    const originalLoadContacts=loadContacts;
     loadContacts=async function(){
-      await baseLoadContacts();
+      await originalLoadContacts();
       const uid=typeof userId==='function'?userId():null;
-      const fp=typeof deviceFingerprint==='string'?deviceFingerprint:null;
+      const ownFps=[];
+      if(typeof deviceFingerprint==='string'&&deviceFingerprint)ownFps.push(deviceFingerprint);
+      try{
+        if(typeof ownDevices==='function'){
+          const list=ownDevices()||[];
+          for(const d of list){if(d&&d.fp&&ownFps.indexOf(d.fp)===-1)ownFps.push(d.fp)}
+        }
+      }catch(e){}
       contacts=(contacts||[]).filter(c=>{
         if(uid&&c.id===uid)return false;
-        if(fp&&Array.isArray(c.devices)&&c.devices.some(d=>d&&d.fp===fp))return false;
+        if(Array.isArray(c.devices)){
+          for(const d of c.devices){if(d&&d.fp&&ownFps.indexOf(d.fp)!==-1)return false}
+        }
         return true;
       });
       if(activeContact&&!contacts.some(c=>c.id===activeContact.id))activeContact=null;
