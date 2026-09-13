@@ -16,4 +16,13 @@
     if(this===sessionStorage&&key===KEY)return nativeRemove.call(localStorage,key);
     return nativeRemove.call(this,key);
   };
+
+  window.addEventListener('DOMContentLoaded',()=>{
+    if(!document.querySelector('link[href^="messenger-enhancements.css"]')){
+      const l=document.createElement('link');l.rel='stylesheet';l.href='messenger-enhancements.css?v=20260913-1';document.head.appendChild(l);
+    }
+    if(!document.querySelector('script[src^="messenger-enhancements.js"]')){
+      const s=document.createElement('script');s.src='messenger-enhancements.js?v=20260913-1';document.body.appendChild(s);
+    }
+  },{once:true});
 })();
