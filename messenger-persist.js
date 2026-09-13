@@ -17,12 +17,23 @@
     return nativeRemove.call(this,key);
   };
 
-  window.addEventListener('DOMContentLoaded',()=>{
+  function addScript(src){
+    if(document.querySelector(`script[src^="${src}"]`))return Promise.resolve();
+    return new Promise(resolve=>{
+      const s=document.createElement('script');
+      s.src=`${src}?v=20260913-3`;
+      s.onload=resolve;
+      s.onerror=resolve;
+      document.body.appendChild(s);
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded',async()=>{
     if(!document.querySelector('link[href^="messenger-enhancements.css"]')){
-      const l=document.createElement('link');l.rel='stylesheet';l.href='messenger-enhancements.css?v=20260913-2';document.head.appendChild(l);
+      const l=document.createElement('link');l.rel='stylesheet';l.href='messenger-enhancements.css?v=20260913-3';document.head.appendChild(l);
     }
-    if(!document.querySelector('script[src^="messenger-enhancements.js"]')){
-      const s=document.createElement('script');s.src='messenger-enhancements.js?v=20260913-2';document.body.appendChild(s);
-    }
+    await addScript('messenger-enhancements.js');
+    await addScript('messenger-self-filter.js');
+    await addScript('messenger-profile-links.js');
   },{once:true});
 })();
