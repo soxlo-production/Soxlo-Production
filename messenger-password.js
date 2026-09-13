@@ -5,9 +5,7 @@
   const $=id=>document.getElementById(id);
   const setMsg=(text,type='')=>{const el=$('passwordChangeMessage');if(!el)return;el.textContent=text;el.className='message'+(type?` ${type}`:'');};
 
-  function readSession(){
-    try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null')}catch{return null}
-  }
+  function readSession(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null')}catch{return null}}
   function saveSession(s){sessionStorage.setItem(SESSION_KEY,JSON.stringify(s))}
   async function currentSession(){
     let s=readSession();
@@ -25,7 +23,23 @@
   }
   function close(){const modal=$('passwordChangeModal');if(modal)modal.hidden=true;setMsg('');$('passwordChangeForm')?.reset();}
 
+  function injectUi(){
+    const securityBox=document.querySelector('.my-security');
+    if(securityBox&&!$('changePasswordBtn')){
+      const btn=document.createElement('button');
+      btn.id='changePasswordBtn';btn.className='text-btn';btn.type='button';btn.textContent='Change VIP password';
+      securityBox.appendChild(btn);
+    }
+    if(!$('passwordChangeModal')){
+      const modal=document.createElement('div');
+      modal.id='passwordChangeModal';modal.className='modal';modal.hidden=true;
+      modal.innerHTML='<div class="modal-card verify-card"><div class="shield">🔑</div><h2>Change SOXLO password</h2><p>This changes the password for this signed-in SOXLO account, including the VIP login.</p><form id="passwordChangeForm" class="stack"><label>New password<input id="newAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label><label>Confirm new password<input id="confirmAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label><p id="passwordChangeMessage" class="message" aria-live="polite"></p><div class="modal-actions"><button id="closePasswordChangeBtn" class="secondary-btn" type="button">Cancel</button><button class="gold-btn" type="submit">Save new password</button></div></form></div>';
+      document.body.appendChild(modal);
+    }
+  }
+
   window.addEventListener('DOMContentLoaded',()=>{
+    injectUi();
     const openBtn=$('changePasswordBtn'),closeBtn=$('closePasswordChangeBtn'),modal=$('passwordChangeModal'),form=$('passwordChangeForm');
     openBtn?.addEventListener('click',()=>{if(modal){modal.hidden=false;$('newAccountPassword')?.focus();}});
     closeBtn?.addEventListener('click',close);
@@ -41,14 +55,12 @@
       try{
         const s=await currentSession();
         const r=await fetch(`${SUPABASE_URL}/auth/v1/user`,{
-          method:'PUT',
-          headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${s.access_token}`,'Content-Type':'application/json'},
+          method:'PUT',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${s.access_token}`,'Content-Type':'application/json'},
           body:JSON.stringify({password}),cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'
         });
         const data=await r.json().catch(()=>({}));
         if(!r.ok)throw new Error(data.msg||data.error_description||data.message||'Could not change password.');
-        form.reset();
-        setMsg('Password changed. You can now use this new password on the SOXLO VIP login.','success');
+        form.reset();setMsg('Password changed. You can now use this new password on the SOXLO VIP login.','success');
       }catch(err){setMsg(err?.message||'Could not change password.','error');}
       finally{if(submit)submit.disabled=false;}
     });
