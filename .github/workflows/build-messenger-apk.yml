@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -22,18 +22,28 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - name: Build APK
+
+      - name: Restore release keystore
+        env:
+          KEYSTORE_DATA: ${{ secrets.SOXLO_ANDROID_KEYSTORE_B64 }}
+        run: |
+          test -n "$KEYSTORE_DATA" || { echo 'Release keystore secret is not configured'; exit 1; }
+          printf '%s' "$KEYSTORE_DATA" | base64 --decode > "$RUNNER_TEMP/soxlo-release.jks"
+          chmod 600 "$RUNNER_TEMP/soxlo-release.jks"
+
+      - name: Build release APK
         working-directory: android-messenger
-        run: gradle assembleDebug
+        env:
+          SOXLO_ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/soxlo-release.jks
+          SOXLO_ANDROID_STORE_PASSWORD: ${{ secrets.SOXLO_ANDROID_STORE_PASSWORD }}
+          SOXLO_ANDROID_KEY_ALIAS: ${{ secrets.SOXLO_ANDROID_KEY_ALIAS }}
+          SOXLO_ANDROID_KEY_PASSWORD: ${{ secrets.SOXLO_ANDROID_KEY_PASSWORD }}
+        run: gradle clean assembleRelease
+
       - name: Prepare APK
-        run: cp android-messenger/app/build/outputs/apk/debug/app-debug.apk SOXLO-Messenger.apk
+        run: cp android-messenger/app/build/outputs/apk/release/app-release.apk SOXLO-Messenger.apk
+
       - uses: actions/upload-artifact@v4
         with:
-          name: SOXLO-Messenger-APK
+          name: SOXLO-Messenger-Release-APK
           path: SOXLO-Messenger.apk
-      - name: Publish latest APK release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release view soxlo-messenger-latest >/dev/null 2>&1 || gh release create soxlo-messenger-latest --title 'SOXLO Messenger Android App' --notes 'Latest installable SOXLO Messenger Android APK.' --target "$GITHUB_SHA"
-          gh release upload soxlo-messenger-latest SOXLO-Messenger.apk --clobber
