@@ -1,5 +1,10 @@
--- SOXLO Private Player setup
--- Run this in Supabase SQL Editor for the project used by supabase-config.json.
+-- SOXLO Private Player setup (hardened)
+-- Run this only against the intended SOXLO Supabase project.
+
+create schema if not exists private;
+revoke all on schema private from public;
+revoke all on schema private from anon;
+grant usage on schema private to authenticated, service_role;
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -18,46 +23,49 @@ create table if not exists public.special_tracks (
 alter table public.profiles enable row level security;
 alter table public.special_tracks enable row level security;
 
-create or replace function public.is_soxlo_admin()
+create or replace function private.is_soxlo_admin()
 returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = ''
 as $$
   select exists (
     select 1 from public.profiles
-    where id = auth.uid() and role = 'admin'
+    where id = (select auth.uid()) and role = 'admin'
   );
 $$;
+revoke all on function private.is_soxlo_admin() from public, anon;
+grant execute on function private.is_soxlo_admin() to authenticated, service_role;
 
 -- HARD MEMBERSHIP CAP: only two SOXLO Private Player login accounts may exist.
--- The advisory lock prevents simultaneous signups from slipping past the count.
-create or replace function public.enforce_soxlo_account_limit()
+create or replace function private.enforce_soxlo_account_limit()
 returns trigger
 language plpgsql
 security definer
-set search_path = public, auth
+set search_path = ''
 as $$
 begin
-  perform pg_advisory_xact_lock(83920501);
+  perform pg_catalog.pg_advisory_xact_lock(83920501);
   if (select count(*) from auth.users) >= 2 then
     raise exception 'SOXLO private membership is full. Maximum 2 login accounts.';
   end if;
   return new;
 end;
 $$;
+revoke all on function private.enforce_soxlo_account_limit() from public, anon, authenticated;
+grant execute on function private.enforce_soxlo_account_limit() to service_role;
 
 drop trigger if exists soxlo_limit_auth_users on auth.users;
 create trigger soxlo_limit_auth_users
 before insert on auth.users
-for each row execute procedure public.enforce_soxlo_account_limit();
+for each row execute function private.enforce_soxlo_account_limit();
 
-create or replace function public.handle_new_user()
+create or replace function private.handle_new_user()
 returns trigger
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
   insert into public.profiles(id, role) values(new.id, 'member')
@@ -65,11 +73,13 @@ begin
   return new;
 end;
 $$;
+revoke all on function private.handle_new_user() from public, anon, authenticated;
+grant execute on function private.handle_new_user() to service_role;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
 after insert on auth.users
-for each row execute procedure public.handle_new_user();
+for each row execute function private.handle_new_user();
 
 insert into public.profiles(id, role)
 select id, 'member' from auth.users
@@ -79,7 +89,7 @@ drop policy if exists "members can read own profile" on public.profiles;
 create policy "members can read own profile"
 on public.profiles for select
 to authenticated
-using (id = auth.uid());
+using (id = (select auth.uid()));
 
 drop policy if exists "members can read private tracks" on public.special_tracks;
 create policy "members can read private tracks"
@@ -91,20 +101,20 @@ drop policy if exists "admins can insert private tracks" on public.special_track
 create policy "admins can insert private tracks"
 on public.special_tracks for insert
 to authenticated
-with check (public.is_soxlo_admin());
+with check ((select private.is_soxlo_admin()));
 
 drop policy if exists "admins can update private tracks" on public.special_tracks;
 create policy "admins can update private tracks"
 on public.special_tracks for update
 to authenticated
-using (public.is_soxlo_admin())
-with check (public.is_soxlo_admin());
+using ((select private.is_soxlo_admin()))
+with check ((select private.is_soxlo_admin()));
 
 drop policy if exists "admins can delete private tracks" on public.special_tracks;
 create policy "admins can delete private tracks"
 on public.special_tracks for delete
 to authenticated
-using (public.is_soxlo_admin());
+using ((select private.is_soxlo_admin()));
 
 insert into storage.buckets(id, name, public)
 values ('special-songs','special-songs',false)
@@ -120,20 +130,20 @@ drop policy if exists "admins can upload special songs" on storage.objects;
 create policy "admins can upload special songs"
 on storage.objects for insert
 to authenticated
-with check (bucket_id='special-songs' and public.is_soxlo_admin());
+with check (bucket_id='special-songs' and (select private.is_soxlo_admin()));
 
 drop policy if exists "admins can update special songs" on storage.objects;
 create policy "admins can update special songs"
 on storage.objects for update
 to authenticated
-using (bucket_id='special-songs' and public.is_soxlo_admin())
-with check (bucket_id='special-songs' and public.is_soxlo_admin());
+using (bucket_id='special-songs' and (select private.is_soxlo_admin()))
+with check (bucket_id='special-songs' and (select private.is_soxlo_admin()));
 
 drop policy if exists "admins can delete special songs" on storage.objects;
 create policy "admins can delete special songs"
 on storage.objects for delete
 to authenticated
-using (bucket_id='special-songs' and public.is_soxlo_admin());
+using (bucket_id='special-songs' and (select private.is_soxlo_admin()));
 
 -- IMPORTANT OWNER STEP
 -- After creating/signing in with your own Supabase Auth account, replace the email below
