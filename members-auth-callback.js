@@ -1,5 +1,6 @@
 (() => {
   const SESSION_KEY='soxlo_private_session_v1';
+  const RECOVERY_KEY='soxlo_private_recovery_v1';
   const NOTICE_KEY='soxlo_private_auth_notice_v1';
   const SUPABASE_URL='https://ovwfqbcxsdfddnfdgopg.supabase.co';
   const SUPABASE_ANON_KEY='sb_publishable_h5KpewMqq8xOyf6VqFymyg_pgQXB99p';
@@ -26,6 +27,7 @@
   const params=new URLSearchParams(location.hash.replace(/^#/,''));
   const accessToken=params.get('access_token');
   const refreshToken=params.get('refresh_token');
+  const authType=params.get('type')||'';
   const authError=params.get('error_description')||params.get('error');
 
   if(authError){
@@ -46,16 +48,25 @@
         headers:{apikey:SUPABASE_ANON_KEY,Authorization:`Bearer ${accessToken}`}
       });
       const user=await userResp.json().catch(()=>({}));
-      if(!userResp.ok||!user?.id)throw new Error('The confirmation link could not be completed. Please sign in again.');
+      if(!userResp.ok||!user?.id)throw new Error('This SOXLO link could not be completed. Please request a new link.');
 
       const expiresIn=Number(params.get('expires_in')||3600);
       const expiresAt=Number(params.get('expires_at')||0)||Math.floor(Date.now()/1000)+expiresIn;
-      const session={access_token:accessToken,refresh_token:refreshToken||'',expires_in:expiresIn,expires_at:expiresAt,token_type:params.get('token_type')||'bearer',user};
-      localStorage.setItem(SESSION_KEY,JSON.stringify(session));
+      const authSession={access_token:accessToken,refresh_token:refreshToken||'',expires_in:expiresIn,expires_at:expiresAt,token_type:params.get('token_type')||'bearer',user};
+
+      if(authType==='recovery'){
+        localStorage.removeItem(SESSION_KEY);
+        sessionStorage.setItem(RECOVERY_KEY,JSON.stringify(authSession));
+        cleanUrl();
+        location.reload();
+        return;
+      }
+
+      localStorage.setItem(SESSION_KEY,JSON.stringify(authSession));
       cleanUrl();
       location.reload();
     }catch(err){
-      sessionStorage.setItem(NOTICE_KEY,err?.message||'Could not complete membership confirmation.');
+      sessionStorage.setItem(NOTICE_KEY,err?.message||'Could not complete the SOXLO account link.');
       cleanUrl();
       location.reload();
     }
