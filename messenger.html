@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
   <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#090806">
+  <meta name="theme-color" content="#0b0d10">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://ovwfqbcxsdfddnfdgopg.supabase.co wss://ovwfqbcxsdfddnfdgopg.supabase.co; img-src 'self' data:; media-src 'self' blob:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests">
   <title>SOXLO Messenger</title>
-  <link rel="stylesheet" href="messenger.css?v=3">
+  <link rel="stylesheet" href="messenger.css?v=4">
 </head>
 <body>
   <main class="shell">
@@ -28,41 +28,56 @@
     <section id="appView" class="messenger" hidden>
       <aside class="contacts-panel">
         <header class="panel-head">
-          <div class="brand compact"><span>SOXLO</span><small>MESSENGER</small></div>
-          <button id="logoutBtn" class="icon-btn" type="button" title="Log out" aria-label="Log out">↪</button>
+          <div class="brand compact"><span>SOXLO</span><small>Messenger</small></div>
+          <div class="head-actions">
+            <details class="top-menu">
+              <summary aria-label="Messenger settings" title="Messenger settings">⋮</summary>
+              <div class="menu-popover">
+                <section class="profile-card">
+                  <label>Your display name
+                    <div class="profile-row">
+                      <input id="displayName" maxlength="40" placeholder="Your name">
+                      <button id="saveProfileBtn" class="small-btn" type="button">Save</button>
+                    </div>
+                  </label>
+                  <div class="my-security">
+                    <span>My device safety code</span>
+                    <code id="mySecurityCode">Creating secure key…</code>
+                    <button id="removeOtherDevicesBtn" class="text-btn" type="button">Remove my other registered devices</button>
+                    <button id="changePasswordBtn" class="text-btn" type="button">Change VIP password</button>
+                  </div>
+                  <p id="profileMessage" class="message compact-msg" aria-live="polite"></p>
+                </section>
+                <div class="download-card">
+                  <strong>SOXLO Messenger Android</strong>
+                  <span>Use the same account. The Android installation receives its own private device key.</span>
+                  <a class="small-btn" href="https://github.com/soxlo-production/Soxlo-Production/releases/download/soxlo-messenger-latest/SOXLO-Messenger.apk" rel="noopener noreferrer">Download APK</a>
+                </div>
+              </div>
+            </details>
+            <button id="logoutBtn" class="icon-btn logout-icon" type="button" title="Log out" aria-label="Log out">↪</button>
+          </div>
         </header>
 
-        <section class="profile-card">
-          <label>Your display name
-            <div class="profile-row">
-              <input id="displayName" maxlength="40" placeholder="Your name">
-              <button id="saveProfileBtn" class="small-btn" type="button">Save</button>
-            </div>
-          </label>
-          <div class="my-security">
-            <span>My device safety code</span>
-            <code id="mySecurityCode">Creating secure key…</code>
-            <button id="removeOtherDevicesBtn" class="text-btn" type="button">Remove my other registered devices</button>
-            <button id="changePasswordBtn" class="text-btn" type="button">Change VIP password</button>
-          </div>
-          <p id="profileMessage" class="message compact-msg" aria-live="polite"></p>
-        </section>
-
+        <div class="search-box" aria-hidden="true"><span>⌕</span><span>Search chats</span></div>
+        <div class="filter-row"><span class="filter active">All</span><span class="filter">Unread</span><span class="filter">Favorites</span></div>
         <div class="contacts-title">
-          <span>Contacts</span>
+          <span>Chats</span>
           <button id="refreshContactsBtn" class="icon-btn" type="button" title="Refresh contacts" aria-label="Refresh contacts">↻</button>
         </div>
         <div id="contactsList" class="contacts-list"></div>
-        <div class="download-card">
-          <strong>SOXLO Messenger Android</strong>
-          <span>Use the same account. The Android installation receives its own private device key.</span>
-          <a class="small-btn" href="https://github.com/soxlo-production/Soxlo-Production/releases/download/soxlo-messenger-latest/SOXLO-Messenger.apk" rel="noopener noreferrer">Download APK</a>
-        </div>
+        <nav class="bottom-nav" aria-label="Messenger navigation">
+          <span class="nav-item active"><b>▰</b><small>Chats</small></span>
+          <span class="nav-item"><b>◉</b><small>Updates</small></span>
+          <span class="nav-item"><b>♙</b><small>Contacts</small></span>
+          <span class="nav-item"><b>⌕</b><small>Calls</small></span>
+        </nav>
       </aside>
 
       <section class="chat-panel">
         <header class="chat-head">
           <button id="mobileBackBtn" class="icon-btn mobile-only" type="button" title="Contacts" aria-label="Back to contacts">‹</button>
+          <div class="chat-avatar">S</div>
           <div class="chat-title">
             <strong id="chatName">Choose a contact</strong>
             <small id="chatStatus">Private SOXLO chat</small>
@@ -84,7 +99,7 @@
         <div id="chatView" class="chat-view" hidden>
           <div id="messageList" class="message-list" aria-live="polite"></div>
           <form id="messageForm" class="composer">
-            <textarea id="messageInput" maxlength="4000" rows="1" placeholder="Write an encrypted message…" required disabled></textarea>
+            <textarea id="messageInput" maxlength="4000" rows="1" placeholder="Message" required disabled></textarea>
             <button id="sendBtn" class="gold-btn send-btn" type="submit" disabled>Send</button>
           </form>
         </div>
