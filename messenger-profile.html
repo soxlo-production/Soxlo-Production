@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#0b0d10">
+  <title>SOXLO Member Profile</title>
+  <link rel="stylesheet" href="messenger-profile.css?v=1">
+</head>
+<body>
+  <main class="profile-shell">
+    <header class="topbar">
+      <a class="back" href="messenger-chat.html">‹ Messenger</a>
+      <div class="brand"><span>SOXLO</span><small>MEMBER PROFILE</small></div>
+    </header>
+
+    <section id="loadingCard" class="card center">Loading secure member profile…</section>
+    <section id="profileCard" class="card" hidden>
+      <div class="hero">
+        <div id="profileAvatar" class="avatar">S</div>
+        <div class="identity"><h1 id="profileName">Member</h1><p id="profileBio" class="bio">No bio yet.</p></div>
+      </div>
+
+      <section id="editSection" class="edit-section" hidden>
+        <h2>Edit your profile</h2>
+        <label>Display name<input id="nameInput" maxlength="40"></label>
+        <label>Bio<textarea id="bioInput" maxlength="300" rows="4" placeholder="Write something about yourself…"></textarea></label>
+        <div class="photo-row">
+          <label class="button secondary">Change profile photo<input id="photoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+          <button id="removePhotoBtn" class="button ghost" type="button">Remove photo</button>
+        </div>
+        <button id="saveProfileBtn" class="button gold" type="button">Save profile</button>
+        <p id="profileMessage" class="message"></p>
+      </section>
+
+      <section class="posts-section">
+        <div class="section-head"><h2>Daily posts</h2></div>
+        <form id="postForm" class="post-form" hidden>
+          <textarea id="postInput" maxlength="1000" rows="3" placeholder="Share your daily post…" required></textarea>
+          <div class="post-actions"><span id="postCount">0 / 1000</span><button class="button gold" type="submit">Post</button></div>
+        </form>
+        <div id="postsList" class="posts-list"></div>
+      </section>
+    </section>
+  </main>
+  <script src="messenger-profile.js?v=1" defer></script>
+</body>
+</html>
