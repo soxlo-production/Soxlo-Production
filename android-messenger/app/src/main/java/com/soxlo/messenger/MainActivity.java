@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
@@ -16,10 +17,12 @@ public class MainActivity extends Activity {
     private WebView webView;
     private PermissionRequest pendingWebPermission;
     private static final int MEDIA_PERMISSION_REQUEST = 42;
+    private static final String APP_HOST = "soxlo-production.github.io";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         WebView.setWebContentsDebuggingEnabled(false);
         webView = new WebView(this);
         setContentView(webView);
@@ -46,7 +49,9 @@ public class MainActivity extends Activity {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
                 runOnUiThread(() -> {
-                    if (!request.getOrigin().toString().startsWith("https://soxlo-production.github.io")) {
+                    if (request.getOrigin() == null
+                            || !"https".equalsIgnoreCase(request.getOrigin().getScheme())
+                            || !APP_HOST.equalsIgnoreCase(request.getOrigin().getHost())) {
                         request.deny();
                         return;
                     }
