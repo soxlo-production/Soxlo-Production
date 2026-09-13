@@ -16,7 +16,7 @@
     <section id="loginView" class="login-card">
       <div class="brand"><span>SOXLO</span><small>MESSENGER</small></div>
       <h1>Private Messenger</h1>
-      <p class="muted">Secure sign-in. Messenger sessions stay only until this app/browser session is closed.</p>
+      <p class="muted">Secure sign-in. You stay signed in on this device until you choose Log out.</p>
       <form id="loginForm" class="stack" autocomplete="on">
         <label>Email<input id="email" type="email" autocomplete="username" maxlength="254" required></label>
         <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
@@ -166,6 +166,7 @@
     </div>
   </div>
 
+  <script src="messenger-persist.js?v=1" defer></script>
   <script src="messenger.js?v=3" defer></script>
   <script src="messenger-password.js?v=1" defer></script>
 </body>
