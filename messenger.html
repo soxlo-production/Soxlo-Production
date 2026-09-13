@@ -14,7 +14,8 @@
   <title>SOXLO Messenger</title>
   <link rel="manifest" href="messenger.webmanifest">
   <link rel="stylesheet" href="messenger.css?v=4">
-  <link rel="stylesheet" href="messenger-v4.css?v=3">
+  <link rel="stylesheet" href="messenger-v4.css?v=4">
+  <link rel="stylesheet" href="messenger-icons.css?v=1">
 </head>
 <body>
   <main class="shell">
@@ -28,5 +29,5 @@
   <div id="passwordChangeModal" class="modal" hidden><div class="modal-card verify-card"><div class="shield">🔐</div><h2>Change VIP password</h2><p>Set a new password for this SOXLO account. Use at least 12 characters.</p><form id="passwordChangeForm" class="stack"><label>New password<input id="newAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label><label>Confirm new password<input id="confirmAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label><p id="passwordChangeMessage" class="message" aria-live="polite"></p><div class="modal-actions"><button id="closePasswordChangeBtn" class="secondary-btn" type="button">Cancel</button><button class="gold-btn" type="submit">Save new password</button></div></form></div></div>
   <div id="incomingModal" class="modal" hidden><div class="modal-card"><div class="pulse-ring">◉</div><h2>Incoming encrypted video call</h2><p id="incomingName">Verified SOXLO contact</p><div class="modal-actions"><button id="declineCallBtn" class="danger-btn" type="button">Decline</button><button id="acceptCallBtn" class="gold-btn" type="button">Accept</button></div></div></div>
   <div id="callOverlay" class="call-overlay" hidden><div class="call-top"><div><strong id="callName">SOXLO secure call</strong><small id="callState">Connecting securely…</small></div><button id="hangupBtn" class="danger-btn" type="button">End call</button></div><div class="video-stage"><video id="remoteVideo" autoplay playsinline></video><video id="localVideo" autoplay playsinline muted></video></div><div class="call-controls"><span class="call-lock">🔒 Encrypted WebRTC media + encrypted signaling</span><button id="toggleMicBtn" class="round-btn" type="button">Mic on</button><button id="toggleCameraBtn" class="round-btn" type="button">Camera on</button></div></div>
-  <script src="messenger-pwa.js?v=1" defer></script><script src="messenger-persist.js?v=1" defer></script><script src="messenger.js?v=3" defer></script><script src="messenger-password.js?v=1" defer></script>
+  <script src="messenger-pwa.js?v=2" defer></script><script src="messenger-persist.js?v=1" defer></script><script src="messenger.js?v=3" defer></script><script src="messenger-password.js?v=1" defer></script>
 </body></html>
