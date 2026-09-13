@@ -38,7 +38,8 @@ $$;
 revoke all on function private.is_soxlo_admin() from public, anon;
 grant execute on function private.is_soxlo_admin() to authenticated, service_role;
 
--- HARD MEMBERSHIP CAP: only two SOXLO Private Player login accounts may exist.
+-- HARD VIP MEMBERSHIP CAP: only two SOXLO Private Player memberships may exist.
+-- Auth accounts used by Messenger do not count unless they also have a VIP profile.
 create or replace function private.enforce_soxlo_account_limit()
 returns trigger
 language plpgsql
@@ -47,8 +48,8 @@ set search_path = ''
 as $$
 begin
   perform pg_catalog.pg_advisory_xact_lock(83920501);
-  if (select count(*) from auth.users) >= 2 then
-    raise exception 'SOXLO private membership is full. Maximum 2 login accounts.';
+  if (select count(*) from public.profiles) >= 2 then
+    raise exception 'SOXLO private membership is full. Maximum 2 VIP memberships.';
   end if;
   return new;
 end;
@@ -95,7 +96,10 @@ drop policy if exists "members can read private tracks" on public.special_tracks
 create policy "members can read private tracks"
 on public.special_tracks for select
 to authenticated
-using (true);
+using (exists (
+  select 1 from public.profiles p
+  where p.id = (select auth.uid())
+));
 
 drop policy if exists "admins can insert private tracks" on public.special_tracks;
 create policy "admins can insert private tracks"
@@ -124,7 +128,13 @@ drop policy if exists "members can read special songs" on storage.objects;
 create policy "members can read special songs"
 on storage.objects for select
 to authenticated
-using (bucket_id='special-songs');
+using (
+  bucket_id='special-songs'
+  and exists (
+    select 1 from public.profiles p
+    where p.id = (select auth.uid())
+  )
+);
 
 drop policy if exists "admins can upload special songs" on storage.objects;
 create policy "admins can upload special songs"
