@@ -3,7 +3,9 @@ package com.soxlo.messenger;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
@@ -15,10 +17,13 @@ public class MainActivity extends Activity {
     private WebView webView;
     private PermissionRequest pendingWebPermission;
     private static final int MEDIA_PERMISSION_REQUEST = 42;
+    private static final String APP_HOST = "soxlo-production.github.io";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        WebView.setWebContentsDebuggingEnabled(false);
         webView = new WebView(this);
         setContentView(webView);
 
@@ -26,18 +31,27 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
+        settings.setAllowFileAccess(false);
+        settings.setAllowContentAccess(false);
+        settings.setGeolocationEnabled(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
+        settings.setSupportMultipleWindows(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) settings.setSafeBrowsingEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/1.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.0");
 
-        CookieManager.getInstance().setAcceptCookie(true);
-        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+        CookieManager.getInstance().setAcceptCookie(false);
+        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
                 runOnUiThread(() -> {
-                    if (!request.getOrigin().toString().startsWith("https://soxlo-production.github.io")) {
+                    if (request.getOrigin() == null
+                            || !"https".equalsIgnoreCase(request.getOrigin().getScheme())
+                            || !APP_HOST.equalsIgnoreCase(request.getOrigin().getHost())) {
                         request.deny();
                         return;
                     }
@@ -59,7 +73,7 @@ public class MainActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MEDIA_PERMISSION_REQUEST && pendingWebPermission != null) {
-            boolean granted = true;
+            boolean granted = grantResults.length > 0;
             for (int result : grantResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
                     granted = false;
