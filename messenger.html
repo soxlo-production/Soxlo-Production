@@ -43,6 +43,7 @@
             <span>My device safety code</span>
             <code id="mySecurityCode">Creating secure key…</code>
             <button id="removeOtherDevicesBtn" class="text-btn" type="button">Remove my other registered devices</button>
+            <button id="changePasswordBtn" class="text-btn" type="button">Change VIP password</button>
           </div>
           <p id="profileMessage" class="message compact-msg" aria-live="polite"></p>
         </section>
@@ -104,6 +105,23 @@
     </div>
   </div>
 
+  <div id="passwordChangeModal" class="modal" hidden>
+    <div class="modal-card verify-card">
+      <div class="shield">🔐</div>
+      <h2>Change VIP password</h2>
+      <p>Set a new password for this SOXLO account. Use at least 12 characters.</p>
+      <form id="passwordChangeForm" class="stack">
+        <label>New password<input id="newAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label>Confirm new password<input id="confirmAccountPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <p id="passwordChangeMessage" class="message" aria-live="polite"></p>
+        <div class="modal-actions">
+          <button id="closePasswordChangeBtn" class="secondary-btn" type="button">Cancel</button>
+          <button class="gold-btn" type="submit">Save new password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div id="incomingModal" class="modal" hidden>
     <div class="modal-card">
       <div class="pulse-ring">◉</div>
@@ -133,5 +151,6 @@
   </div>
 
   <script src="messenger.js?v=3" defer></script>
+  <script src="messenger-password.js?v=1" defer></script>
 </body>
 </html>
