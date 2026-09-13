@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     private static final int NOTIFICATION_PERMISSION_REQUEST = 43;
     private static final String APP_HOST = "soxlo-production.github.io";
     private static final String CHANNEL_ID = "soxlo_messages";
-    private static final String LIVE_URL = "https://soxlo-production.github.io/Soxlo-Production/messenger.html?android=1&ui=calltext-v2";
+    private static final String LIVE_URL = "https://soxlo-production.github.io/Soxlo-Production/messenger.html?android=1&sync=website-v4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) settings.setSafeBrowsingEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.3");
+        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.4");
 
         CookieManager.getInstance().setAcceptCookie(false);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
@@ -110,6 +110,7 @@ public class MainActivity extends Activity {
         super.onResume();
         if (webView != null) {
             webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            webView.reload();
         }
     }
 
