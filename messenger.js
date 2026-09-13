@@ -6,6 +6,7 @@ const SIGNAL_MS=700;
 
 let session=null,contacts=[],activeContact=null,messages=[],messagePoll=null,contactPoll=null,signalPoll=null;
 let peer=null,localStream=null,currentCallId=null,currentCallPeer=null,lastCallSignalId=0,pendingOffer=null,lastIncomingOfferId=0;
+let signalReady=false,pendingLocalIce=[],pendingRemoteIce=[];
 
 const $=id=>document.getElementById(id);
 const loginView=$('loginView'),appView=$('appView'),loginForm=$('loginForm'),loginMessage=$('loginMessage');
@@ -127,11 +128,26 @@ async function openMedia(){
   localVideo.srcObject=localStream;return localStream;
 }
 function createPeer(){
+  signalReady=false;pendingLocalIce=[];pendingRemoteIce=[];
   peer=new RTCPeerConnection({iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]});
   localStream.getTracks().forEach(t=>peer.addTrack(t,localStream));
   peer.ontrack=e=>{remoteVideo.srcObject=e.streams[0];callState.textContent='Connected'};
-  peer.onicecandidate=e=>{if(e.candidate)sendSignal('ice',e.candidate.toJSON()).catch(()=>{})};
+  peer.onicecandidate=e=>{
+    if(!e.candidate)return;
+    const c=e.candidate.toJSON();
+    if(signalReady)sendSignal('ice',c).catch(()=>{});else pendingLocalIce.push(c);
+  };
   peer.onconnectionstatechange=()=>{if(!peer)return;const s=peer.connectionState;callState.textContent=s==='connected'?'Connected':s==='failed'?'Connection failed':s==='disconnected'?'Reconnecting…':'Connecting…';if(['failed','closed'].includes(s))endCall(false)};
+}
+async function flushLocalIce(){
+  signalReady=true;
+  const queued=pendingLocalIce.splice(0);
+  for(const c of queued){try{await sendSignal('ice',c)}catch{}}
+}
+async function flushRemoteIce(){
+  if(!peer?.remoteDescription)return;
+  const queued=pendingRemoteIce.splice(0);
+  for(const c of queued){try{await peer.addIceCandidate(c)}catch{}}
 }
 async function startCall(){
   if(!activeContact)return;
@@ -140,12 +156,13 @@ async function startCall(){
     callName.textContent=activeContact.display_name;callState.textContent='Starting camera…';callOverlay.hidden=false;
     await openMedia();createPeer();
     const offer=await peer.createOffer({offerToReceiveAudio:true,offerToReceiveVideo:true});await peer.setLocalDescription(offer);
-    await sendSignal('offer',peer.localDescription.toJSON());callState.textContent='Calling…';
+    await sendSignal('offer',peer.localDescription.toJSON());await flushLocalIce();callState.textContent='Calling…';
   }catch(e){callState.textContent=e.message||'Could not start call';setTimeout(()=>endCall(false),1200)}
 }
 async function pollIncomingOffers(){
   if(currentCallId||pendingOffer)return;
-  const r=await api(`/rest/v1/messenger_call_signals?select=id,call_id,sender_id,recipient_id,signal_type,payload,created_at&recipient_id=eq.${encodeURIComponent(userId())}&signal_type=eq.offer&id=gt.${lastIncomingOfferId}&order=id.asc&limit=5`);
+  const recent=encodeURIComponent(new Date(Date.now()-60000).toISOString());
+  const r=await api(`/rest/v1/messenger_call_signals?select=id,call_id,sender_id,recipient_id,signal_type,payload,created_at&recipient_id=eq.${encodeURIComponent(userId())}&signal_type=eq.offer&id=gt.${lastIncomingOfferId}&created_at=gte.${recent}&order=id.asc&limit=5`);
   if(!r.ok)return;const rows=await r.json();if(!rows.length)return;
   const offer=rows.at(-1);lastIncomingOfferId=Math.max(lastIncomingOfferId,...rows.map(x=>Number(x.id)||0));pendingOffer=offer;
   const c=contacts.find(x=>x.id===offer.sender_id)||{id:offer.sender_id,display_name:'SOXLO contact'};incomingName.textContent=c.display_name;incomingModal.hidden=false;
@@ -156,8 +173,8 @@ async function acceptIncoming(){
     const offer=pendingOffer;pendingOffer=null;incomingModal.hidden=true;
     currentCallId=offer.call_id;currentCallPeer=contacts.find(x=>x.id===offer.sender_id)||{id:offer.sender_id,display_name:'SOXLO contact'};lastCallSignalId=Number(offer.id)||0;
     callName.textContent=currentCallPeer.display_name;callState.textContent='Starting camera…';callOverlay.hidden=false;
-    await openMedia();createPeer();await peer.setRemoteDescription(offer.payload);
-    const answer=await peer.createAnswer();await peer.setLocalDescription(answer);await sendSignal('answer',peer.localDescription.toJSON());
+    await openMedia();createPeer();await peer.setRemoteDescription(offer.payload);await flushRemoteIce();
+    const answer=await peer.createAnswer();await peer.setLocalDescription(answer);await sendSignal('answer',peer.localDescription.toJSON());await flushLocalIce();
     callState.textContent='Connecting…';
   }catch(e){callState.textContent=e.message||'Could not answer';setTimeout(()=>endCall(false),1200)}
 }
@@ -167,21 +184,27 @@ async function declineIncoming(){
   pendingOffer=null;incomingModal.hidden=true;try{await sendSignal('hangup',{reason:'declined'})}catch{}finally{currentCallId=null;currentCallPeer=null}
 }
 async function pollCallSignals(){
-  if(!currentCallId||!currentCallPeer)return;
+  if(!currentCallId||!currentCallPeer||!peer)return;
   const r=await api(`/rest/v1/messenger_call_signals?select=id,call_id,sender_id,recipient_id,signal_type,payload,created_at&call_id=eq.${encodeURIComponent(currentCallId)}&id=gt.${lastCallSignalId}&order=id.asc&limit=50`);
   if(!r.ok)return;const rows=await r.json();
   for(const s of rows){
     lastCallSignalId=Math.max(lastCallSignalId,Number(s.id)||0);if(s.sender_id===userId())continue;
-    if(s.signal_type==='answer'&&peer&&!peer.currentRemoteDescription){await peer.setRemoteDescription(s.payload)}
-    else if(s.signal_type==='ice'&&peer){try{await peer.addIceCandidate(s.payload)}catch{}}
+    if(s.signal_type==='answer'&&!peer.currentRemoteDescription){await peer.setRemoteDescription(s.payload);await flushRemoteIce()}
+    else if(s.signal_type==='ice'){
+      if(peer.remoteDescription){try{await peer.addIceCandidate(s.payload)}catch{}}
+      else pendingRemoteIce.push(s.payload);
+    }
     else if(s.signal_type==='hangup'){endCall(false);break}
   }
 }
 async function endCall(notify=true){
+  const finishedCallId=currentCallId;
   if(notify&&currentCallId&&currentCallPeer){try{await sendSignal('hangup',{reason:'ended'})}catch{}}
   if(peer){peer.onicecandidate=null;peer.ontrack=null;peer.close();peer=null}
   if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null}
-  localVideo.srcObject=null;remoteVideo.srcObject=null;callOverlay.hidden=true;incomingModal.hidden=true;currentCallId=null;currentCallPeer=null;lastCallSignalId=0;
+  localVideo.srcObject=null;remoteVideo.srcObject=null;callOverlay.hidden=true;incomingModal.hidden=true;
+  currentCallId=null;currentCallPeer=null;lastCallSignalId=0;signalReady=false;pendingLocalIce=[];pendingRemoteIce=[];
+  if(finishedCallId)setTimeout(()=>api(`/rest/v1/messenger_call_signals?call_id=eq.${encodeURIComponent(finishedCallId)}`,{method:'DELETE',headers:{Prefer:'return=minimal'}}).catch(()=>{}),15000);
 }
 function toggleTrack(kind,button){
   const track=localStream?.getTracks().find(t=>t.kind===kind);if(!track)return;
