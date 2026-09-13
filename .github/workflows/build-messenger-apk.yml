@@ -28,7 +28,7 @@ jobs:
           KEYSTORE_DATA: ${{ secrets.SOXLO_ANDROID_KEYSTORE_B64 }}
         run: |
           test -n "$KEYSTORE_DATA" || { echo 'Release keystore secret is not configured'; exit 1; }
-          printf '%s' "$KEYSTORE_DATA" | base64 --decode > "$RUNNER_TEMP/soxlo-release.jks"
+          printf '%s' "$KEYSTORE_DATA" | tr -d '\r\n\t ' | base64 --decode > "$RUNNER_TEMP/soxlo-release.jks"
           chmod 600 "$RUNNER_TEMP/soxlo-release.jks"
 
       - name: Build release APK
