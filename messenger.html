@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#090806">
+  <title>SOXLO Messenger</title>
+  <link rel="stylesheet" href="messenger.css?v=1">
+</head>
+<body>
+  <main class="shell">
+    <section id="loginView" class="login-card">
+      <div class="brand"><span>SOXLO</span><small>MESSENGER</small></div>
+      <h1>Private Messenger</h1>
+      <p class="muted">Sign in with your SOXLO account.</p>
+      <form id="loginForm" class="stack">
+        <label>Email<input id="email" type="email" autocomplete="username" required></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+        <button class="gold-btn" type="submit">Sign in</button>
+      </form>
+      <p id="loginMessage" class="message" aria-live="polite"></p>
+    </section>
+
+    <section id="appView" class="messenger" hidden>
+      <aside class="contacts-panel">
+        <header class="panel-head">
+          <div class="brand compact"><span>SOXLO</span><small>MESSENGER</small></div>
+          <button id="logoutBtn" class="icon-btn" type="button" title="Log out">↪</button>
+        </header>
+
+        <section class="profile-card">
+          <label>Your display name
+            <div class="profile-row">
+              <input id="displayName" maxlength="40" placeholder="Your name">
+              <button id="saveProfileBtn" class="small-btn" type="button">Save</button>
+            </div>
+          </label>
+          <p id="profileMessage" class="message compact-msg"></p>
+        </section>
+
+        <div class="contacts-title">
+          <span>Contacts</span>
+          <button id="refreshContactsBtn" class="icon-btn" type="button" title="Refresh">↻</button>
+        </div>
+        <div id="contactsList" class="contacts-list"></div>
+        <div class="download-card">
+          <strong>SOXLO Messenger Android</strong>
+          <a class="small-btn" href="https://github.com/soxlo-production/Soxlo-Production/releases/download/soxlo-messenger-latest/SOXLO-Messenger.apk">Download APK</a>
+        </div>
+      </aside>
+
+      <section class="chat-panel">
+        <header class="chat-head">
+          <button id="mobileBackBtn" class="icon-btn mobile-only" type="button" title="Contacts">‹</button>
+          <div>
+            <strong id="chatName">Choose a contact</strong>
+            <small id="chatStatus">Private SOXLO chat</small>
+          </div>
+          <button id="videoCallBtn" class="call-btn" type="button" disabled>Video call</button>
+        </header>
+
+        <div id="emptyState" class="empty-state">
+          <div class="bubble-mark">✦</div>
+          <h2>SOXLO Messenger</h2>
+          <p>Select a contact to start a private conversation.</p>
+        </div>
+
+        <div id="chatView" class="chat-view" hidden>
+          <div id="messageList" class="message-list"></div>
+          <form id="messageForm" class="composer">
+            <textarea id="messageInput" maxlength="4000" rows="1" placeholder="Write a message…" required></textarea>
+            <button class="gold-btn send-btn" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="incomingModal" class="modal" hidden>
+    <div class="modal-card">
+      <div class="pulse-ring">◉</div>
+      <h2>Incoming video call</h2>
+      <p id="incomingName">SOXLO contact</p>
+      <div class="modal-actions">
+        <button id="declineCallBtn" class="danger-btn" type="button">Decline</button>
+        <button id="acceptCallBtn" class="gold-btn" type="button">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="callOverlay" class="call-overlay" hidden>
+    <div class="call-top">
+      <div><strong id="callName">SOXLO call</strong><small id="callState">Connecting…</small></div>
+      <button id="hangupBtn" class="danger-btn" type="button">End call</button>
+    </div>
+    <div class="video-stage">
+      <video id="remoteVideo" autoplay playsinline></video>
+      <video id="localVideo" autoplay playsinline muted></video>
+    </div>
+    <div class="call-controls">
+      <button id="toggleMicBtn" class="round-btn" type="button">Mic on</button>
+      <button id="toggleCameraBtn" class="round-btn" type="button">Camera on</button>
+    </div>
+  </div>
+
+  <script src="messenger.js?v=1" defer></script>
+</body>
+</html>
