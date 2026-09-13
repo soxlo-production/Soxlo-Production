@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
@@ -27,11 +28,15 @@ public class MainActivity extends Activity {
     private static final int NOTIFICATION_PERMISSION_REQUEST = 43;
     private static final String APP_HOST = "soxlo-production.github.io";
     private static final String CHANNEL_ID = "soxlo_messages";
+    private static final String LIVE_URL = "https://soxlo-production.github.io/Soxlo-Production/messenger.html?android=1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        getWindow().setStatusBarColor(0xFF0B0D10);
+        getWindow().setNavigationBarColor(0xFF0B0D10);
         WebView.setWebContentsDebuggingEnabled(false);
         createNotificationChannel();
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -51,12 +56,15 @@ public class MainActivity extends Activity {
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
         settings.setSupportMultipleWindows(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) settings.setSafeBrowsingEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.1");
+        settings.setUserAgentString(settings.getUserAgentString() + " SOXLO-Messenger-Android/2.2");
 
         CookieManager.getInstance().setAcceptCookie(false);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
+
+        webView.clearCache(true);
 
         webView.addJavascriptInterface(new Object() {
             @JavascriptInterface
@@ -87,7 +95,19 @@ public class MainActivity extends Activity {
             }
         });
 
-        webView.loadUrl("https://soxlo-production.github.io/Soxlo-Production/messenger.html?android=1");
+        loadLiveMessenger();
+    }
+
+    private void loadLiveMessenger() {
+        webView.loadUrl(LIVE_URL + "&fresh=" + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) {
+            webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        }
     }
 
     private void createNotificationChannel() {
