@@ -1,4 +1,4 @@
-const CACHE='soxlo-player-v6-20260904-2250';
+const CACHE='soxlo-player-v7-20261015-1';
 const SHELL=['./','./index.html','./style.css','./posters.css','./script.js','./poster-fix.js','./pwa.js','./manifest.webmanifest','./members.html','./members.css','./vip-menu.css','./members.js','./members.webmanifest','./studio.html','./studio.js','./voice-studio.html','./voice-studio.js','./songs.html','./supabase-config.json','./soxlo-app-icon.svg'];
 self.addEventListener('install',event=>{
   self.skipWaiting();

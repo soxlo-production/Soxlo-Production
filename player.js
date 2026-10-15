@@ -2,6 +2,7 @@ const SUPABASE_URL='https://ovwfqbcxsdfddnfdgopg.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_h5KpewMqq8xOyf6VqFymyg_pgQXB99p';
 const PUBLIC_BUCKET='public-songs';
 const builtInTracks=[
+{title:'Good Morning, My Love',src:'music/good-morning-my-love.mp3'},
 {title:'You Think You Know Me',src:'videos/1787483448110.mp4'},
 {title:'Golden Girl',src:'videos/1785964769490.mp4'},
 {title:"Don't Let Me Go",src:'videos/1784533770988.mp4'},
