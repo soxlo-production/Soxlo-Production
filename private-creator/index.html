@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>SOXLO | Private Creator</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0d0b0a;color:#f6ead4;font:16px system-ui,sans-serif}main{max-width:720px;margin:auto;padding:28px 18px}.logo{font-size:29px;letter-spacing:.16em;color:#e4ba68;font-weight:800}.sub{color:#b5a48a}section{border:1px solid #66502c;border-radius:18px;padding:22px;margin-top:24px;background:#17130f}label{display:block;margin:16px 0 6px}input,textarea,select,button{width:100%;border-radius:10px;padding:13px;font:inherit}input,textarea,select{background:#241e18;color:#fff;border:1px solid #675330}button{background:#d5aa5b;color:#161009;border:0;font-weight:700;margin-top:18px;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#352a1d;color:#f8e8ca}img{max-width:100%;border-radius:12px;margin-top:14px}.hidden{display:none}.status{color:#e5bd76;white-space:pre-wrap}small{color:#bcae96}
+</style></head><body><main><header><div class="logo">SOXLO</div><div class="sub">PRIVATE IMAGE CREATOR · SEPARATE STUDIO</div></header>
+<section id="setup"><h2>Private studio setup required</h2><p>This studio is locked until a separate Supabase project and protected image backend are configured. No passwords or API secrets belong in this public GitHub repository.</p><small>See SETUP.md in this folder. The existing SOXLO website is unchanged.</small></section>
+<section id="login" class="hidden"><h2>Private sign in</h2><label>Email</label><input id="email" type="email" autocomplete="username"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button id="signIn">Sign in</button><p class="status" id="loginStatus"></p></section>
+<section id="studio" class="hidden"><h2>Create an image</h2><p class="sub">Your prompts are sent only to the configured image backend.</p><label>Describe your picture</label><textarea id="prompt" rows="5" placeholder="Describe the image..."></textarea><label>Aspect ratio</label><select id="ratio"><option value="1:1">Square</option><option value="16:9">Landscape</option><option value="9:16">Portrait</option></select><label>Reference photo (optional)</label><input type="file" id="reference" accept="image/png,image/jpeg,image/webp"><button id="generate">Generate</button><button class="secondary" id="signOut">Sign out</button><p class="status" id="status"></p><div id="output"></div></section>
+</main><script type="module">
+/* Fill these public configuration values only AFTER securing the backend.
+Never put service-role keys, provider keys, or passwords in this file. */
+const CONFIG={supabaseUrl:"",supabaseAnonKey:"",generationEndpoint:""};
+const $=id=>document.getElementById(id);
+const show=id=>{for(const el of ["setup","login","studio"])$(el).classList.toggle("hidden",el!==id)};
+if(CONFIG.supabaseUrl&&CONFIG.supabaseAnonKey&&CONFIG.generationEndpoint){
+ const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
+ const supabase=createClient(CONFIG.supabaseUrl,CONFIG.supabaseAnonKey);
+ const update=async()=>{const {data:{session}}=await supabase.auth.getSession();show(session?"studio":"login")};
+ await update();
+ supabase.auth.onAuthStateChange(()=>update());
+ $("signIn").onclick=async()=>{const {error}=await supabase.auth.signInWithPassword({email:$("email").value,password:$("password").value});$("loginStatus").textContent=error?.message||""};
+ $("signOut").onclick=async()=>{await supabase.auth.signOut()};
+ $("generate").onclick=async()=>{
+  const status=$("status"),button=$("generate");button.disabled=true;status.textContent="Generating...";
+  try{
+   const {data:{session}}=await supabase.auth.getSession();if(!session)throw Error("Please sign in again.");
+   const form=new FormData();form.append("prompt",$("prompt").value);form.append("ratio",$("ratio").value);
+   if($("reference").files[0])form.append("reference",$("reference").files[0]);
+   const response=await fetch(CONFIG.generationEndpoint,{method:"POST",headers:{Authorization:"Bearer "+session.access_token},body:form});
+   if(!response.ok)throw Error("Generation failed ("+response.status+")");
+   const data=await response.json();if(!data.imageUrl||!/^https:\/\//.test(data.imageUrl))throw Error("Invalid image response");
+   const img=document.createElement("img");img.alt="Generated artwork";img.src=data.imageUrl;$("output").replaceChildren(img);status.textContent="Complete";
+  }catch(e){status.textContent=e.message}finally{button.disabled=false}
+ };
+}
+</script></body></html>
